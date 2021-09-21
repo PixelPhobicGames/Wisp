@@ -1,10 +1,15 @@
 /* Code By Liquid 2021 */
+
 #include "MysticEngineCoreData.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
 
 // This Code Is a Modified Engine I Wrote a While back so Its a bit messy
+
+// MysticEngine 1.2.0 ( Modified )
+
+// Runs on raylib 3.5
 
 using namespace std;
 
