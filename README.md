@@ -20,13 +20,24 @@ Compilation Instructions
     
     Type The Following into the Terminal
       
-      sudo apt install g++ make 
+      * sudo apt install g++ make 
       
-      sudo apt install sudo apt install libasound2-dev mesa-common-dev libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev libglu1-mesa-dev
+      * sudo apt install sudo apt install libasound2-dev mesa-common-dev libx11-dev libxrandr-dev libxi-dev xorg-dev libgl1-mesa-dev libglu1-mesa-dev
       
     Go Into the src Folder 
     
-    run make then sudo make install 
+    run The Following in a Terminal 
+    
+      * make 
+      * sudo make install 
+      
+    
+    Go into Wisp Source Code Folder and Run 
+      * make 
+      
+      
+      
+ Make sure The Game Data Folders Are In the Same Directory as The Executable
 
     
     
