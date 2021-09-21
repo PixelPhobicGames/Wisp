@@ -35,7 +35,7 @@ int GetCollision(int x, int y , int w, int h, int x2 , int y2 , int w2 , int h2)
 
 
 static void MysticDrawLevel(wstring LevelData, int Level_Width , int Level_Height, wchar_t ShaderBlock1 , wchar_t ShaderBlock2 , wchar_t ShaderBlock3 , wchar_t ShaderBlock4 ){
-    for (int x = 0; x <=  (MysticCamera.XOffset + 640) / 20 ;  x ++ ){
+    for (int x = (MysticCamera.XOffset) / 20; x <=  (MysticCamera.XOffset + 640) / 20 ;  x ++ ){
         for (int y = 0; y <=  Level_Height;  y ++ ){
             if (!MysticCoreData.LowEndHardware){
                 if (LevelData[y*Level_Width+x ] == ShaderBlock1){
