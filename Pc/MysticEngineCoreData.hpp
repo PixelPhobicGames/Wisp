@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include "MysticLevelRenderer.hpp"
 #include <time.h>
-#include "rlgl/rlgl.h"
+#include <rlgl.h>
 
 //#define LINUX_BUILD //GL3.3
 
