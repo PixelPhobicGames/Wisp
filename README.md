@@ -37,6 +37,9 @@ Compilation Instructions
       * make 
       
       
+    Note ~ if you are on Linux You can run the Python Script Files and they Will build the Version of the Game You would Like. 
+      
+      
       
  Make sure The Game Data Folders Are In the Same Directory as The Executable
 
