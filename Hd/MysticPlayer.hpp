@@ -3,13 +3,12 @@
 
 typedef struct MysticPlayer
 {
-    /* data */
     int x;
     int y;
-    int direction;
-    int facing_direction;
-    int Velocity_X;
-    int Velocity_Y;
+    int Direction;
+    int FacingDirection;
+    int VelocityX;
+    int VelocityY;
     int Level;
     int Health;
     int Charge;
@@ -18,27 +17,27 @@ typedef struct MysticPlayer
     int JumpCounter;
     int IsOnGround;
 
-    int Projectile_Direction;
+    int ProjectileDirection;
     int JumpCoolDown;
-    int acceloration;
+    int Acceloration;
     int Lives;
-    int Text_Size;
+    int TextSize;
 
-    int Projectile_trigger;
-    int Projectile_x;
-    int Projectile_y;
+    int ProjectileTrigger;
+    int ProjectileX;
+    int ProjectileY;
 
     int CanShoot;
 
     int HeartVisable;
 
-    int Rocket_x;
-    int Rocket_y;
-    int Rocket_trigger;
+    int RocketX;
+    int RocketY;
+    int RocketTrigger;
 
-    int Click_Timer;
-    int Click_x;
-    int Click_y;
+    int ClickTimer;
+    int ClickX;
+    int ClickY;
 
     int HasRocket;
     

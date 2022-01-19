@@ -1,22 +1,23 @@
+  UserOperatingSystem = $(shell uname)
 
-  version ?= DEBUG
-  UOS=$(shell uname)
   ifeq ($(OS),Windows_NT)
-        PLATFORM = windows
+        PLATFORM = Windows
     else
-		ifeq ($(UOS),Linux)
-			PLATFORM = linux
+		ifeq ($(UserOperatingSystem),Linux)
+			PLATFORM = Linux
 		endif
 	endif
-  ifeq ($(PLATFORM),windows)
+
+  ifeq ($(PLATFORM),Windows)
     CC = C:/raylib/mingw/bin/g++.exe
-    exename ?= Wisp.exe
-    CFLAGS  = -s -O3 -static -Wall -Iexternal -DPLATFORM_DESKTOP -lopengl32 -lraylib -lgdi32 -lwinmm -D _TINYCONFIG 
+    exename ?= WispHD.exe
+    CFLAGS  = -DWINDOWS_BUILD -s -O3 -static -Wall -Iexternal -DPLATFORM_DESKTOP -lopengl32 -lraylib -lgdi32 -lwinmm
   endif
-  ifeq ($(PLATFORM),linux)
+
+  ifeq ($(PLATFORM),Linux)
     CC = g++
-    exename ?= Wisp
-    CFLAGS  = -s -O3 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11 -D _TINYCONFIG
+    exename ?= WispHD
+    CFLAGS  = -DLINUX_BUILD -s -O3 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
   endif
 
   all: $(TARGET)

@@ -1,9 +1,52 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-//#include "MysticParticles.hpp"
 
 using namespace std;
+
+
+
+static int R = 0;
+static int G = 0;
+static int B = 0;
+
+#define SplashColor  CLITERAL(Color){ R, G, B, 255 } 
+
+#define SPRO  CLITERAL(Color){ 74, 74, 74, 255 } 
+#define SPRO2  CLITERAL(Color){ 32, 32, 32, 255 } 
+
+static int TextAnimationValue = 0;
+
+static int HomeScreenScroller = 0;
+
+static int LevelEditorXOffset = 8;
+
+static int Help = false;
+
+static int Splash = true;
+
+static int SplashCounter = 0 ;
+
+static int SaveMessageCounter = 0;
+
+static int ColorCounter = 0;
+
+static wchar_t CurrrentSelectedTile = L'0';
+
+static int Scroller = 0;
+
+static int FrameCounter = 0;
+
+static int TextCounter = 1;
+
+static int BonusLevelsEnabled = false;
+
+static int BonusScroll = 0;
+
+static int Start = false;
+
+static int ExportMessageCounter = 0;
+
 
 
 typedef struct MCurrentData{
@@ -26,14 +69,14 @@ typedef struct MCurrentData{
 static MCurrentData CurrentData;
 
 typedef struct GameData{
-    int Level_ID;
+    int LevelID;
     int FPS;
-    int Animation_Ticker;
+    int AnimationTicker;
     int Debug;
-    int Hover_Animation_Ticker;
-    int Hover_Animation_DIR;
+    int HoverAnimationTicker;
+    int HoverAnimationDirection;
     int GameType;
-    int Gravity_Strength;
+    int GravityStrength;
     int BreakTimer;
     int CanMoveOn;
     int TrackNumber;
@@ -44,15 +87,15 @@ typedef struct GameData{
     int BonusMenu;
     
     Shader shader;
-    Music Title_Music;
-    Music Game_Music1;
-    Music Game_Music2;
-    Music Game_Music3;
-    Music Game_Music4;
+    Music TitleMusic;
+    Music GameMusic1;
+    Music GameMusic2;
+    Music GameMusic3;
+    Music GameMusic4;
 
-    Music Kill_Sound;
-    Music Shoot_Sound;
-    Music Jump_Sound;
+    Music KillSound;
+    Music ShootSound;
+    Music JumpSound;
 }GameData;
 
 static GameData MysticCoreData;
@@ -60,9 +103,9 @@ static GameData MysticCoreData;
 typedef struct MCamera{
     int XOffset;
     int YOffset;
-    int Background_Parrallax_X_1;
-    int Background_Parrallax_X_2;
-    int Background_Parrallax_X_3;
+    int BackgroundParrallaxX1;
+    int BackgroundParrallaxX2;
+    int BackgroundParrallaxX3;
 }MCamera;
 
 static MCamera MysticCamera;
@@ -84,85 +127,81 @@ typedef struct LevelData{
     wchar_t ShaderBlock3;
     wchar_t ShaderBlock4;
 
-    Music Music_1;
-
-
+    Music Music1;
 
 }LevelData;
 
-static LevelData Level_1_Data;
+static LevelData Level1Data;
 
-static LevelData Level_2_Data;
+static LevelData Level2Data;
 
-static LevelData Level_3_Data;
+static LevelData Level3Data;
 
-static LevelData Level_4_Data;
+static LevelData Level4Data;
 
-static LevelData Level_5_Data;
+static LevelData Level5Data;
 
-static LevelData Level_6_Data;
+static LevelData Level6Data;
 
-static LevelData Level_7_Data;
+static LevelData Level7Data;
 
-static LevelData Level_8_Data;
+static LevelData Level8Data;
 
-static LevelData Level_9_Data;
+static LevelData Level9Data;
 
-static LevelData Level_10_Data;
+static LevelData Level10Data;
 
-static LevelData Level_11_Data;
+static LevelData Level11Data;
 
-static LevelData Level_12_Data;
+static LevelData Level12Data;
 
-static LevelData Level_13_Data;
+static LevelData Level13Data;
 
-static LevelData Level_14_Data;
+static LevelData Level14Data;
 
-static LevelData Level_15_Data;
+static LevelData Level15Data;
 
-static LevelData Level_16_Data;
+static LevelData Level16Data;
 
-static LevelData Level_17_Data;
+static LevelData Level17Data;
 
-static LevelData Level_18_Data;
+static LevelData Level18Data;
 
-static LevelData Level_19_Data;
+static LevelData Level19Data;
 
-static LevelData Level_20_Data;
+static LevelData Level20Data;
 
-static LevelData Level_21_Data;
+static LevelData Level21Data;
 
-static LevelData Level_22_Data;
+static LevelData Level22Data;
 
-static LevelData Level_23_Data;
+static LevelData Level23Data;
 
-static LevelData Level_24_Data;
+static LevelData Level24Data;
 
-static LevelData Level_25_Data;
+static LevelData Level25Data;
 
-static LevelData Level_26_Data;
+static LevelData Level26Data;
 
-static LevelData Level_27_Data;
+static LevelData Level27Data;
 
-static LevelData Level_28_Data;
+static LevelData Level28Data;
 
-static LevelData Level_29_Data;
+static LevelData Level29Data;
 
-static LevelData Level_30_Data;
+static LevelData Level30Data;
 
-static LevelData Level_Custom_Data;
+static LevelData LevelCustomData;
 
-static LevelData Bonus_Data_1;
+static LevelData BonusData1;
 
 
 typedef struct MShaders{
     Shader Water;
     Shader General;
-
 }MShaders;
 
-static MShaders Core_Shaders;
-
+static MShaders CoreShaders;
 
 
 wstring LoadFile(const char *PATH){
@@ -192,647 +231,646 @@ wchar_t LoadMconfFile(const char *PATH){
 
 }
 
-
 static void InitLevelData(){
 
-    MysticCoreData.Kill_Sound = LoadMusicStream("GameAssets/Sound/Kill.mp3");
-    MysticCoreData.Shoot_Sound = LoadMusicStream("GameAssets/Sound/Shoot.mp3");
-    MysticCoreData.Jump_Sound = LoadMusicStream("GameAssets/Sound/Jump.mp3");
+    MysticCoreData.KillSound = LoadMusicStream("GameAssets/Sound/Kill.mp3");
+    MysticCoreData.ShootSound = LoadMusicStream("GameAssets/Sound/Shoot.mp3");
+    MysticCoreData.JumpSound = LoadMusicStream("GameAssets/Sound/Jump.mp3");
 
 
-    Level_1_Data.LevelWidth = 512;
+    Level1Data.LevelWidth = 512;
 
-    Level_1_Data.LevelHeight = 24;
-    Level_1_Data.VisableTiles = 32;
-
-    // Shader MConfs
-    Level_1_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_1_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_1_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_1_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
-
-    // Non Collision Blocks 
-    Level_1_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_1_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_1_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_1_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
-
-    Level_1_Data.Data  = LoadFile("LevelData/Level_1/Level_1.mpak");
-
-
-    Level_2_Data.LevelWidth = 512;
-
-    Level_2_Data.LevelHeight = 24;
-    Level_2_Data.VisableTiles = 32;
+    Level1Data.LevelHeight = 24;
+    Level1Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_2_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_2_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_2_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_2_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level1Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level1Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level1Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level1Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_2_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_2_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_2_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_2_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level1Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level1Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level1Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level1Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_2_Data.Data  = LoadFile("LevelData/Level_2/Level_2.mpak");
+    Level1Data.Data  = LoadFile("LevelData/Level_1/Level_1.mpak");
+
+
+    Level2Data.LevelWidth = 512;
+
+    Level2Data.LevelHeight = 24;
+    Level2Data.VisableTiles = 32;
+
+    // Shader MConfs
+    Level2Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level2Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level2Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level2Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+
+    // Non Collision Blocks 
+    Level2Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level2Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level2Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level2Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_2/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+
+    Level2Data.Data  = LoadFile("LevelData/Level_2/Level_2.mpak");
 
     
 
-    Level_3_Data.LevelWidth = 512;
+    Level3Data.LevelWidth = 512;
 
-    Level_3_Data.LevelHeight = 24;
-    Level_3_Data.VisableTiles = 32;
-
-    // Shader MConfs
-    Level_3_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_3_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_3_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_3_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
-
-    // Non Collision Blocks 
-    Level_3_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_3_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_3_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_3_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
-
-    Level_3_Data.Data  = LoadFile("LevelData/Level_3/Level_3.mpak");
-
-    Level_4_Data.LevelWidth = 512;
-
-    Level_4_Data.LevelHeight = 24;
-    Level_4_Data.VisableTiles = 32;
+    Level3Data.LevelHeight = 24;
+    Level3Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_4_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_4_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_4_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_4_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level3Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level3Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level3Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level3Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_4_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_4_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_4_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_4_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level3Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level3Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level3Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level3Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_3/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_4_Data.Data  = LoadFile("LevelData/Level_4/Level_4.mpak");
+    Level3Data.Data  = LoadFile("LevelData/Level_3/Level_3.mpak");
 
-    Level_5_Data.LevelWidth = 512;
+    Level4Data.LevelWidth = 512;
 
-    Level_5_Data.LevelHeight = 24;
-    Level_5_Data.VisableTiles = 32;
+    Level4Data.LevelHeight = 24;
+    Level4Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_5_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_5_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_5_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_5_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level4Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level4Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level4Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level4Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_5_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_5_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_5_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_5_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level4Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level4Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level4Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level4Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_4/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_5_Data.Data  = LoadFile("LevelData/Level_5/Level_5.mpak");
+    Level4Data.Data  = LoadFile("LevelData/Level_4/Level_4.mpak");
 
-    Level_6_Data.LevelWidth = 512;
+    Level5Data.LevelWidth = 512;
 
-    Level_6_Data.LevelHeight = 24;
-    Level_6_Data.VisableTiles = 32;
+    Level5Data.LevelHeight = 24;
+    Level5Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_6_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_6_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_6_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_6_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level5Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level5Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level5Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level5Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_6_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_6_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_6_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_6_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level5Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level5Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level5Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level5Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_5/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_6_Data.Data  = LoadFile("LevelData/Level_6/Level_6.mpak");
+    Level5Data.Data  = LoadFile("LevelData/Level_5/Level_5.mpak");
 
-    Level_7_Data.LevelWidth = 512;
+    Level6Data.LevelWidth = 512;
 
-    Level_7_Data.LevelHeight = 24;
-    Level_7_Data.VisableTiles = 32;
+    Level6Data.LevelHeight = 24;
+    Level6Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_7_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_7_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_7_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_7_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level6Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level6Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level6Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level6Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_7_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_7_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_7_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_7_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level6Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level6Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level6Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level6Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_6/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_7_Data.Data  = LoadFile("LevelData/Level_7/Level_7.mpak");
+    Level6Data.Data  = LoadFile("LevelData/Level_6/Level_6.mpak");
 
-    Level_8_Data.LevelWidth = 512;
+    Level7Data.LevelWidth = 512;
 
-    Level_8_Data.LevelHeight = 24;
-    Level_8_Data.VisableTiles = 32;
+    Level7Data.LevelHeight = 24;
+    Level7Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_8_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_8_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_8_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_8_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level7Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level7Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level7Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level7Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_8_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_8_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_8_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_8_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level7Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level7Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level7Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level7Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_7/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_8_Data.Data  = LoadFile("LevelData/Level_8/Level_8.mpak");
+    Level7Data.Data  = LoadFile("LevelData/Level_7/Level_7.mpak");
 
-    Level_9_Data.LevelWidth = 512;
+    Level8Data.LevelWidth = 512;
 
-    Level_9_Data.LevelHeight = 24;
-    Level_9_Data.VisableTiles = 32;
+    Level8Data.LevelHeight = 24;
+    Level8Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_9_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_9_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_9_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_9_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level8Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level8Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level8Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level8Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_9_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_9_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_9_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_9_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level8Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level8Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level8Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level8Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_8/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_9_Data.Data  = LoadFile("LevelData/Level_9/Level_9.mpak");
+    Level8Data.Data  = LoadFile("LevelData/Level_8/Level_8.mpak");
+
+    Level9Data.LevelWidth = 512;
+
+    Level9Data.LevelHeight = 24;
+    Level9Data.VisableTiles = 32;
+
+    // Shader MConfs
+    Level9Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level9Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level9Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level9Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+
+    // Non Collision Blocks 
+    Level9Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level9Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level9Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level9Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_9/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+
+    Level9Data.Data  = LoadFile("LevelData/Level_9/Level_9.mpak");
     
-    Level_10_Data.LevelWidth = 512;
+    Level10Data.LevelWidth = 512;
 
-    Level_10_Data.LevelHeight = 24;
-    Level_10_Data.VisableTiles = 32;
-
-    // Shader MConfs
-    Level_10_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_10_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_10_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_10_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
-
-    // Non Collision Blocks 
-    Level_10_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_10_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_10_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_10_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
-
-    Level_10_Data.Data  = LoadFile("LevelData/Level_10/Level_10.mpak");
-
-    Level_10_Data.LevelWidth = 512;
-
-    Level_10_Data.LevelHeight = 24;
-    Level_10_Data.VisableTiles = 32;
+    Level10Data.LevelHeight = 24;
+    Level10Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_10_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_10_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_10_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_10_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level10Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level10Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level10Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level10Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_10_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_10_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_10_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_10_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level10Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level10Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level10Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level10Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_10_Data.Data  = LoadFile("LevelData/Level_10/Level_10.mpak");
+    Level10Data.Data  = LoadFile("LevelData/Level_10/Level_10.mpak");
 
-    Level_11_Data.LevelWidth = 512;
+    Level10Data.LevelWidth = 512;
 
-    Level_11_Data.LevelHeight = 24;
-    Level_11_Data.VisableTiles = 32;
+    Level10Data.LevelHeight = 24;
+    Level10Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_11_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_11_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_11_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_11_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level10Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level10Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level10Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level10Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_11_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_11_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_11_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_11_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level10Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level10Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level10Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level10Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_10/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_11_Data.Data  = LoadFile("LevelData/Level_11/Level_11.mpak");
+    Level10Data.Data  = LoadFile("LevelData/Level_10/Level_10.mpak");
 
+    Level11Data.LevelWidth = 512;
 
-    Level_12_Data.LevelWidth = 512;
-
-    Level_12_Data.LevelHeight = 24;
-    Level_12_Data.VisableTiles = 32;
+    Level11Data.LevelHeight = 24;
+    Level11Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_12_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_12_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_12_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_12_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level11Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level11Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level11Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level11Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_12_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_12_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_12_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_12_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level11Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level11Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level11Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level11Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_11/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_12_Data.Data  = LoadFile("LevelData/Level_12/Level_12.mpak");
+    Level11Data.Data  = LoadFile("LevelData/Level_11/Level_11.mpak");
 
-    Level_13_Data.LevelWidth = 512;
 
-    Level_13_Data.LevelHeight = 24;
-    Level_13_Data.VisableTiles = 32;
+    Level12Data.LevelWidth = 512;
+
+    Level12Data.LevelHeight = 24;
+    Level12Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_13_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_13_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_13_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_13_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level12Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level12Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level12Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level12Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_13_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_13_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_13_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_13_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level12Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level12Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level12Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level12Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_12/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_13_Data.Data  = LoadFile("LevelData/Level_13/Level_13.mpak");
+    Level12Data.Data  = LoadFile("LevelData/Level_12/Level_12.mpak");
 
-    Level_14_Data.LevelWidth = 512;
+    Level13Data.LevelWidth = 512;
 
-    Level_14_Data.LevelHeight = 24;
-    Level_14_Data.VisableTiles = 32;
+    Level13Data.LevelHeight = 24;
+    Level13Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_14_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_14_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_14_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_14_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level13Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level13Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level13Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level13Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_14_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_14_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_14_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_14_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level13Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level13Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level13Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level13Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_13/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_14_Data.Data  = LoadFile("LevelData/Level_14/Level_14.mpak");
+    Level13Data.Data  = LoadFile("LevelData/Level_13/Level_13.mpak");
 
+    Level14Data.LevelWidth = 512;
 
-    Level_15_Data.LevelWidth = 512;
-
-    Level_15_Data.LevelHeight = 24;
-    Level_15_Data.VisableTiles = 32;
+    Level14Data.LevelHeight = 24;
+    Level14Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_15_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_15_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_15_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_15_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level14Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level14Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level14Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level14Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_15_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_15_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_15_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_15_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level14Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level14Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level14Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level14Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_14/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_15_Data.Data  = LoadFile("LevelData/Level_15/Level_15.mpak");
+    Level14Data.Data  = LoadFile("LevelData/Level_14/Level_14.mpak");
 
 
-    Level_16_Data.LevelWidth = 512;
+    Level15Data.LevelWidth = 512;
 
-    Level_16_Data.LevelHeight = 24;
-    Level_16_Data.VisableTiles = 32;
+    Level15Data.LevelHeight = 24;
+    Level15Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_16_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_16_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_16_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_16_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level15Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level15Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level15Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level15Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_16_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_16_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_16_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_16_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level15Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level15Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level15Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level15Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_15/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_16_Data.Data  = LoadFile("LevelData/Level_16/Level_16.mpak");
+    Level15Data.Data  = LoadFile("LevelData/Level_15/Level_15.mpak");
 
 
-    Level_17_Data.LevelWidth = 512;
+    Level16Data.LevelWidth = 512;
 
-    Level_17_Data.LevelHeight = 24;
-    Level_17_Data.VisableTiles = 32;
+    Level16Data.LevelHeight = 24;
+    Level16Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_17_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_17_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_17_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_17_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level16Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level16Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level16Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level16Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_17_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_17_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_17_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_17_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level16Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level16Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level16Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level16Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_16/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_17_Data.Data  = LoadFile("LevelData/Level_17/Level_17.mpak");
+    Level16Data.Data  = LoadFile("LevelData/Level_16/Level_16.mpak");
 
-    Level_18_Data.LevelWidth = 512;
 
-    Level_18_Data.LevelHeight = 24;
-    Level_18_Data.VisableTiles = 32;
+    Level17Data.LevelWidth = 512;
+
+    Level17Data.LevelHeight = 24;
+    Level17Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_18_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_18_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_18_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_18_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level17Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level17Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level17Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level17Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_18_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_18_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_18_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_18_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level17Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level17Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level17Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level17Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_17/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_18_Data.Data  = LoadFile("LevelData/Level_18/Level_18.mpak");
+    Level17Data.Data  = LoadFile("LevelData/Level_17/Level_17.mpak");
 
+    Level18Data.LevelWidth = 512;
 
-    Level_19_Data.LevelWidth = 512;
-
-    Level_19_Data.LevelHeight = 24;
-    Level_19_Data.VisableTiles = 32;
+    Level18Data.LevelHeight = 24;
+    Level18Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_19_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_19_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_19_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_19_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level18Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level18Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level18Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level18Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_19_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_19_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_19_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_19_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level18Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level18Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level18Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level18Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_18/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_19_Data.Data  = LoadFile("LevelData/Level_19/Level_19.mpak");
+    Level18Data.Data  = LoadFile("LevelData/Level_18/Level_18.mpak");
 
-    Level_20_Data.LevelWidth = 512;
 
-    Level_20_Data.LevelHeight = 24;
-    Level_20_Data.VisableTiles = 32;
+    Level19Data.LevelWidth = 512;
+
+    Level19Data.LevelHeight = 24;
+    Level19Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_20_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_20_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_20_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_20_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level19Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level19Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level19Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level19Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_20_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_20_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_20_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_20_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level19Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level19Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level19Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level19Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_19/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_20_Data.Data  = LoadFile("LevelData/Level_20/Level_20.mpak");
+    Level19Data.Data  = LoadFile("LevelData/Level_19/Level_19.mpak");
 
-    Level_21_Data.LevelWidth = 512;
+    Level20Data.LevelWidth = 512;
 
-    Level_21_Data.LevelHeight = 24;
-    Level_21_Data.VisableTiles = 32;
+    Level20Data.LevelHeight = 24;
+    Level20Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_21_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_21_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_21_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_21_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level20Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level20Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level20Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level20Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_21_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_21_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_21_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_21_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level20Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level20Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level20Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level20Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_20/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_21_Data.Data  = LoadFile("LevelData/Level_21/Level_21.mpak");
+    Level20Data.Data  = LoadFile("LevelData/Level_20/Level_20.mpak");
 
-    Level_22_Data.LevelWidth = 512;
+    Level21Data.LevelWidth = 512;
 
-    Level_22_Data.LevelHeight = 24;
-    Level_22_Data.VisableTiles = 32;
+    Level21Data.LevelHeight = 24;
+    Level21Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_22_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_22_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_22_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_22_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level21Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level21Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level21Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level21Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_22_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_22_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_22_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_22_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level21Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level21Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level21Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level21Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_21/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_22_Data.Data  = LoadFile("LevelData/Level_22/Level_22.mpak");
+    Level21Data.Data  = LoadFile("LevelData/Level_21/Level_21.mpak");
 
-    Level_23_Data.LevelWidth = 512;
+    Level22Data.LevelWidth = 512;
 
-    Level_23_Data.LevelHeight = 24;
-    Level_23_Data.VisableTiles = 32;
+    Level22Data.LevelHeight = 24;
+    Level22Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_23_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_23_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_23_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_23_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level22Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level22Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level22Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level22Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_23_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_23_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_23_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_23_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level22Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level22Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level22Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level22Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_22/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_23_Data.Data  = LoadFile("LevelData/Level_23/Level_23.mpak");
+    Level22Data.Data  = LoadFile("LevelData/Level_22/Level_22.mpak");
 
-    Level_24_Data.LevelWidth = 512;
+    Level23Data.LevelWidth = 512;
 
-    Level_24_Data.LevelHeight = 24;
-    Level_24_Data.VisableTiles = 32;
+    Level23Data.LevelHeight = 24;
+    Level23Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_24_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_24_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_24_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_24_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level23Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level23Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level23Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level23Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_24_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_24_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_24_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_24_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level23Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level23Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level23Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level23Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_23/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_24_Data.Data  = LoadFile("LevelData/Level_24/Level_24.mpak");
+    Level23Data.Data  = LoadFile("LevelData/Level_23/Level_23.mpak");
 
-    Level_25_Data.LevelWidth = 512;
+    Level24Data.LevelWidth = 512;
 
-    Level_25_Data.LevelHeight = 24;
-    Level_25_Data.VisableTiles = 32;
+    Level24Data.LevelHeight = 24;
+    Level24Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_25_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_25_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_25_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_25_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level24Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level24Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level24Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level24Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_25_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_25_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_25_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_25_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level24Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level24Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level24Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level24Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_24/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_25_Data.Data  = LoadFile("LevelData/Level_25/Level_25.mpak");
+    Level24Data.Data  = LoadFile("LevelData/Level_24/Level_24.mpak");
 
-    Level_26_Data.LevelWidth = 512;
+    Level25Data.LevelWidth = 512;
 
-    Level_26_Data.LevelHeight = 24;
-    Level_26_Data.VisableTiles = 32;
+    Level25Data.LevelHeight = 24;
+    Level25Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_26_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_26_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_26_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_26_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level25Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level25Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level25Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level25Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_26_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_26_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_26_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_26_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level25Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level25Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level25Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level25Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_25/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_26_Data.Data  = LoadFile("LevelData/Level_26/Level_26.mpak");
+    Level25Data.Data  = LoadFile("LevelData/Level_25/Level_25.mpak");
 
-    Level_27_Data.LevelWidth = 512;
+    Level26Data.LevelWidth = 512;
 
-    Level_27_Data.LevelHeight = 24;
-    Level_27_Data.VisableTiles = 32;
+    Level26Data.LevelHeight = 24;
+    Level26Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_27_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_27_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_27_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_27_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level26Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level26Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level26Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level26Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_27_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_27_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_27_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_27_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level26Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level26Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level26Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level26Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_26/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_27_Data.Data  = LoadFile("LevelData/Level_27/Level_27.mpak");
+    Level26Data.Data  = LoadFile("LevelData/Level_26/Level_26.mpak");
 
-    Level_28_Data.LevelWidth = 512;
+    Level27Data.LevelWidth = 512;
 
-    Level_28_Data.LevelHeight = 24;
-    Level_28_Data.VisableTiles = 32;
+    Level27Data.LevelHeight = 24;
+    Level27Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_28_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_28_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_28_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_28_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level27Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level27Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level27Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level27Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_28_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_28_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_28_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_28_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level27Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level27Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level27Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level27Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_27/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_28_Data.Data  = LoadFile("LevelData/Level_28/Level_28.mpak");
+    Level27Data.Data  = LoadFile("LevelData/Level_27/Level_27.mpak");
 
-    Level_29_Data.LevelWidth = 512;
+    Level28Data.LevelWidth = 512;
 
-    Level_29_Data.LevelHeight = 24;
-    Level_29_Data.VisableTiles = 32;
+    Level28Data.LevelHeight = 24;
+    Level28Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_29_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_29_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_29_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_29_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level28Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level28Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level28Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level28Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_29_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_29_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_29_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_29_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level28Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level28Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level28Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level28Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_28/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_29_Data.Data  = LoadFile("LevelData/Level_29/Level_29.mpak");
+    Level28Data.Data  = LoadFile("LevelData/Level_28/Level_28.mpak");
 
-    Level_30_Data.LevelWidth = 512;
+    Level29Data.LevelWidth = 512;
 
-    Level_30_Data.LevelHeight = 24;
-    Level_30_Data.VisableTiles = 32;
+    Level29Data.LevelHeight = 24;
+    Level29Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_30_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_30_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_30_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_30_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level29Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level29Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level29Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level29Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_30_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_30_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_30_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_30_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level29Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level29Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level29Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level29Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_29/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_30_Data.Data  = LoadFile("LevelData/Level_30/Level_30.mpak");
+    Level29Data.Data  = LoadFile("LevelData/Level_29/Level_29.mpak");
 
-    Level_Custom_Data.LevelWidth = 512;
+    Level30Data.LevelWidth = 512;
 
-    Level_Custom_Data.LevelHeight = 24;
-    Level_Custom_Data.VisableTiles = 32;
+    Level30Data.LevelHeight = 24;
+    Level30Data.VisableTiles = 32;
 
     // Shader MConfs
-    Level_Custom_Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Level_Custom_Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Level_Custom_Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Level_Custom_Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    Level30Data.ShaderBlock1 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    Level30Data.ShaderBlock2 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    Level30Data.ShaderBlock3 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    Level30Data.ShaderBlock4 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Level_Custom_Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Level_Custom_Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Level_Custom_Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Level_Custom_Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    Level30Data.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    Level30Data.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    Level30Data.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    Level30Data.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_30/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Level_Custom_Data.Data  = LoadFile("LevelData/Level_Custom/Level_Custom.mpak");
+    Level30Data.Data  = LoadFile("LevelData/Level_30/Level_30.mpak");
 
-    Bonus_Data_1.LevelWidth = 512;
+    LevelCustomData.LevelWidth = 512;
 
-    Bonus_Data_1.LevelHeight = 24;
-    Bonus_Data_1.VisableTiles = 32;
+    LevelCustomData.LevelHeight = 24;
+    LevelCustomData.VisableTiles = 32;
 
     // Shader MConfs
-    Bonus_Data_1.ShaderBlock1 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
-    Bonus_Data_1.ShaderBlock2 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
-    Bonus_Data_1.ShaderBlock3 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
-    Bonus_Data_1.ShaderBlock4 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+    LevelCustomData.ShaderBlock1 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    LevelCustomData.ShaderBlock2 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    LevelCustomData.ShaderBlock3 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    LevelCustomData.ShaderBlock4 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
 
     // Non Collision Blocks 
-    Bonus_Data_1.NonCollisionBlock1 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
-    Bonus_Data_1.NonCollisionBlock2 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
-    Bonus_Data_1.NonCollisionBlock3 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
-    Bonus_Data_1.NonCollisionBlock4 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+    LevelCustomData.NonCollisionBlock1 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    LevelCustomData.NonCollisionBlock2 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    LevelCustomData.NonCollisionBlock3 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    LevelCustomData.NonCollisionBlock4 = LoadMconfFile("LevelData/Level_Custom/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
 
-    Bonus_Data_1.Data  = LoadFile("LevelData/Bonus_Data_1/Bonus_Data_1.mpak");
+    LevelCustomData.Data  = LoadFile("LevelData/Level_Custom/Level_Custom.mpak");
+
+    BonusData1.LevelWidth = 512;
+
+    BonusData1.LevelHeight = 24;
+    BonusData1.VisableTiles = 32;
+
+    // Shader MConfs
+    BonusData1.ShaderBlock1 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock1.mconf");
+    BonusData1.ShaderBlock2 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock2.mconf");
+    BonusData1.ShaderBlock3 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock3.mconf");
+    BonusData1.ShaderBlock4 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/ShaderConf/Custom_ShaderBlock4.mconf");
+
+
+    BonusData1.NonCollisionBlock1 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block1.mconf");
+    BonusData1.NonCollisionBlock2 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block2.mconf");
+    BonusData1.NonCollisionBlock3 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block3.mconf");
+    BonusData1.NonCollisionBlock4 = LoadMconfFile("LevelData/Bonus_Data_1/ProgrammableComponents/CollisionBlockConf/Custom_NonCollision_Block4.mconf");
+
+    BonusData1.Data  = LoadFile("LevelData/Bonus_Data_1/Bonus_Data_1.mpak");
 }
 

@@ -1,105 +1,160 @@
 /* Code By Liquid 2021 */
+
+/* Code Improved By Liquid 2022 */
+
+
+/*- Backstory -
+
+        This Game Started as A Dumb Idea We had on Discord One day. A Member of the team had been working on a Platformer Engine Known as MysticEngine. Liquid 
+    Took that Engine and Modded it to Use Only Text Characters. We Submitted the Game to the 4MB Game Jam on itch.io and Placed 8th. This Game Had No Budget and was
+    all Completed on Spare Time. 
+    
+
+    Special Thanks to The Developers of Raylib. Raylib Helped make this game A Reality, Before We Had Developed a Whole Framework On Top of SDL2 that was very 
+    Buggy and Slow. Then We swapped that out with Raylib 3.5 and It Worked Flawlessy. 
+    
+    
+    - Credits -
+
+
+    ~ Lead Engine Development
+
+        Liquid
+
+    ~ Music 
+
+        Liquid
+
+    ~ Gameplay Testing 
+
+        PPG Development Team / MysticEngine Team 
+
+    ~ Idea
+
+        Liquid
+
+        PPG Development Team / MysticEngine Team 
+
+    ~ Level Design
+
+        Liquid 
+
+        PPG Development Team / MysticEngine Team 
+
+*/
+
+
+/*
+
+  MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM 
+ MMMMMMMWNXXKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKXXNWMMMMMMM 
+MMMMMMMWXOxolllllllllllllllllllllllllllllllllllllllllllllllllllllllloxOXWMMMMMMM
+MMMMMWNKOd:,........................................................,:dOKNWMMMMM
+MMWNX0kdl:'..........................................................':ldk0XNWMM
+MMNKko:,'..............................................................',:okKNMM
+MWN0d:'..................................................................':d0NWM
+MWN0d:'..................................................................':d0NWM
+MWN0d:'..................................................................':d0NWM
+MWN0d:'.................,;ccllllllllllllllllllllllllcc;,.................':d0NWM
+MWN0d:'................,cxOKKKKKKKKKKKKKKKKKKKKKKKKKKOxc,................':d0NWM
+MWN0d:'..............,:ok0NWWNXKKKKKKKKKKKKKKKKKKXNWWN0ko:,..............':d0NWM
+MWN0d:'...........';ldk0XNWNX0kdollllllllllllllodk0XNWNX0kdl;'...........':d0NWM
+MWN0d:'...........;okKNWWWNKOd:,................,:dOKNWWWNKko;...........':d0NWM
+MWN0d:'...........:d0XWNX0kdl:'..................':ldk0XNWX0d:...........':d0NWM
+MWN0d:'...........:d0XNKko:,'......................',:okKNX0d:...........':d0NWM
+MWN0d:'...........:d0XX0d:'........',,,;;,,,'........':d0XX0d:...........':d0NWM
+MWN0d:'...........:d0XX0d:'......,:ldxkkkkxdl:,......':d0XX0d:...........':d0NWM
+MWN0d:'...........:d0XX0d:'......;okKNWWWWNKko;......':d0XX0d:...........':d0NWM
+MWN0d:'...........:d0XX0d:'.....':d0NWMMMMWN0d:'.....':d0XX0d:...........':d0NWM
+MWN0d:'...........:d0XX0d:'.....':dOXWMMMMWXOd:'.....':d0XX0d:...........':d0NWM
+MWN0d:'...........:d0XX0d:'......;lxOKXXXXKOxl;.......;lxOOxl;...........':d0NWM
+MWN0d:'...........:d0XX0d:'.......,:cllllllc:,........',:cc:,'...........':d0NWM
+MWN0d:'...........:d0XX0xc,..............................................':d0NWM
+MWN0d:'...........:d0XNX0koc;,...........................................':d0NWM
+MWN0d:'...........;oOXWWWNKOxl;..........................................':d0NWM
+MWN0d:'...........,cdOKNWWWNKko:;,,,;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,,,;:okKNMM
+MWN0d:'............';cox0XWWNX0OkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkO0XNWMM
+MWN0d:'...............':oOKNNNNXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXNWWMMM
+MWN0d:'................';ldxkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkO0XNWMM
+MWN0d:'..................'',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;:okKNMM
+MWN0d:'..................................................................':d0NWM
+MWN0d:'..................................................................':d0NWM
+MMN0xc,..................................................................,cx0NWM
+MMWX0xoc;,............................................................,;cox0XWMM
+MMMWNNKOxl;..........................................................;lxOKNNWMMM
+MMMMMMWNKko:;,,,,,,;;;;,,,,,,;;;,,,,,,,,,,,,,,,,,,,,,,,,,;;;;,,,,,,;:okKNWMMMMMM
+MMMMMMMWNK0OkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkO0KNWMMMMMMM
+ MMMMMMMMWWWNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNWWWMMMMMMMM
+   MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM  
+
+
+                       ~ Wisp Team 2021 ~
+
+*/
 #include "MysticEngineCoreData.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
 
-// This Code Is a Modified Engine I Wrote a While back so Its a bit messy
-
 using namespace std;
-
-static int r = 0;
-static int g = 0;
-static int b = 0;
-
-#define SplashColor  CLITERAL(Color){ r, g, b, 255 } 
-
-#define SPRO  CLITERAL(Color){ 74, 74, 74, 255 } 
-#define SPRO2  CLITERAL(Color){ 32, 32, 32, 255 } 
-
 
 
 int main (void){
 
 
     InitWindow(640 , 500 , "WispHD");
+    SetTargetFPS(60);
+
+    SetWindowIcon(LoadImage("GameAssets/Icon/icon.png"));  
+
+    Texture2D SplashScreen = LoadTexture("GameAssets/SplashScreen/ppg.png");
+
+    Music PPGSplash = LoadMusicStream("GameAssets/SplashScreen/PPGopen.mp3");
 
     if (LoadMconfFile("GameAssets/MainConf/Window.mconf") == L'0'){
         SetWindowState(FLAG_WINDOW_UNDECORATED);
     }
 
-    SetWindowIcon(LoadImage("GameAssets/Icon/icon.png"));  
-    
-
-    MysticCoreData.LowEndHardware = false;
-
-    int TextAnimationValue = 0;
-
-    int HomeScreenScroller = 0;
-
-    int MVMS = 8;
-
-    MysticCoreData.LevelEditor = false;
-
-    
-
     if (LoadMconfFile("GameAssets/MainConf/Full_Screen.mconf") == L'1'){
         ToggleFullscreen();
     }
-
-    int Help = false;
-
-    MysticBoss.Alive = true;
-    MysticCoreData.GameType = 1;
 
     if (LoadMconfFile("GameAssets/MainConf/Sound.mconf") == L'1'){
         InitAudioDevice();
     }
 
-    SetTargetFPS(60);
-
-    #if (defined(TEST_PROGRAM))
-        Level_1_Data.Data = LoadFile(argv[1]);
-    #endif
-
-
-    Texture2D SplashScreen = LoadTexture("GameAssets/SplashScreen/ppg.png");
-
-    int Splash = true;
-
-    int SplashCounter = 0 ;
-
-    int Scount = 0;
-
-    int sd = 0;
-
-    Music PPGSplash = LoadMusicStream("GameAssets/SplashScreen/PPGopen.mp3");
+    if (LoadMconfFile("GameAssets/Saves/SAV_0.msave") == L'1'){
+        BonusLevelsEnabled = true;
+    }
 
     PlayMusicStream(PPGSplash);
 
     while (Splash && !WindowShouldClose()){
+
         BeginDrawing();
+
         UpdateControls();
         UpdateMusicStream(PPGSplash);
+
         ClearBackground(WHITE);
+
         DrawTexture(SplashScreen , 0 , 0 , SplashColor);
-        if (r >= 255 && sd == 0){
-            sd = 1;
+
+        if (R >= 255 && ColorCounter == 0){
+            ColorCounter = 1;
         }
 
-        if (sd == 0){
-            r += 1;
-            g += 1;
-            b += 1;
+        if (ColorCounter == 0){
+            R += 1;
+            G += 1;
+            B += 1;
         }
 
         else{
-            r -= 1;
-            g -= 1;
-            b -= 1;
+            R -= 1;
+            G -= 1;
+            B -= 1;
         }
-
-
 
         if (SplashCounter != 500){
             SplashCounter ++;
@@ -115,146 +170,27 @@ int main (void){
 
     MysticInit();
 
+    MysticMusicInit();
+
     InitLevelData();
 
-    LoadTexture();
+    ResetLevel(Level1Data);
+    ScanForSpawnTiles(Level1Data);
+    ScanForEnemyTiles(Level1Data);
 
-    wchar_t CT ;
+    PlayMusicStream(MysticCoreData.TitleMusic);
 
-    int Scroller = 0;
-    CT = L'0';
-
-    MysticPlayerOne.Text_Size = 40;
-
-    MysticCoreData.CanMoveOn = false;
-
-    int secondsLoc = GetShaderLocation(Core_Shaders.Water, "secondes");
-    int freqXLoc = GetShaderLocation(Core_Shaders.Water, "freqX");
-    int freqYLoc = GetShaderLocation(Core_Shaders.Water, "freqY");
-    int ampXLoc = GetShaderLocation(Core_Shaders.Water, "ampX");
-    int ampYLoc = GetShaderLocation(Core_Shaders.Water, "ampY");
-    int speedXLoc = GetShaderLocation(Core_Shaders.Water, "speedX");
-    int speedYLoc = GetShaderLocation(Core_Shaders.Water, "speedY");
-    // Shader uniform values that can be updated at any time
-    float freqX = 25.0f;
-    float freqY = 25.0f;
-    float ampX = 5.0f;
-    float ampY = 5.0f;
-    float speedX = 8.0f;
-    float speedY = 8.0f;
-
-    float screenSize[2] = { (float)GetScreenWidth(), (float)GetScreenHeight() };
-
-    int Ecount = 0;
-
-    MysticPlayerOne.Charge = 0;
-
-    #if (defined(WINDOWS_BUILD))
-        SetShaderValue(Core_Shaders.Water, GetShaderLocation(Core_Shaders.Water, "size"), &screenSize, UNIFORM_VEC2);
-        SetShaderValue(Core_Shaders.Water, freqXLoc, &freqX, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, freqYLoc, &freqY, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, ampXLoc, &ampX, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, ampYLoc, &ampY, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, speedXLoc, &speedX, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, speedYLoc, &speedY, UNIFORM_FLOAT  );
-    #endif
-
-    #if (defined(LINUX_BUILD))
-        SetShaderValue(Core_Shaders.Water, GetShaderLocation(Core_Shaders.Water, "size"), &screenSize, UNIFORM_VEC2);
-        SetShaderValue(Core_Shaders.Water, freqXLoc, &freqX, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, freqYLoc, &freqY, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, ampXLoc, &ampX, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, ampYLoc, &ampY, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, speedXLoc, &speedX, UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, speedYLoc, &speedY, UNIFORM_FLOAT  );
-    #endif
-
-    #if (defined(RPI_BUILD))
-        SetShaderValue(Core_Shaders.Water, GetShaderLocation(Core_Shaders.Water, "size"), &screenSize, SHADER_UNIFORM_VEC2);
-        SetShaderValue(Core_Shaders.Water, freqXLoc, &freqX, SHADER_UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, freqYLoc, &freqY, SHADER_UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, ampXLoc, &ampX, SHADER_UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, ampYLoc, &ampY, SHADER_UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, speedXLoc, &speedX, SHADER_UNIFORM_FLOAT  );
-        SetShaderValue(Core_Shaders.Water, speedYLoc, &speedY, SHADER_UNIFORM_FLOAT  );
-    #endif
-
-    float seconds = 0.0f;
-    
-    MysticCamera.XOffset = 0;
-
-    MysticCoreData.Level_ID = 0;
-
-    MysticCoreData.Title_Music = LoadMusicStream("GameAssets/Music/Title.mp3");
-
-    MysticCoreData.Game_Music1 = LoadMusicStream("GameAssets/Music/Music1.mp3");
-
-    MysticCoreData.Game_Music2 = LoadMusicStream("GameAssets/Music/Music2.mp3");
-
-    MysticCoreData.Game_Music3 = LoadMusicStream("GameAssets/Music/Music3.mp3");
-
-    MysticCoreData.Game_Music4 = LoadMusicStream("GameAssets/Music/Music4.mp3");
-
-    MysticBoss.Projectile_x = 0;
-
-    MysticBoss.Projectile_y = 0;
-
-    MysticBoss.Projectile_trigger = false;
-
-    int FrameCounter = 0;
-
-    int TextCounter = 1;
-
-    int BonusLevels = false;
-
-    MysticCoreData.BonusMenu = false;
-
-    int BonusScroll = 0;
-
-
-    if (LoadMconfFile("GameAssets/Saves/SAV_0.msave") == L'1'){
-        BonusLevels = true;
-    }
-
-
-    MysticCoreData.TrackNumber = 3;
-
-    int Start = false;
-    ResetLevel(Level_1_Data);
-    // Quickly Scan for + Tiles to Set the Players Spawn 
-    ScanForSpawnTiles(Level_1_Data);
-
-    // Scans for Enemy Tiles or & 
-    ScanForEnemyTiles(Level_1_Data);
-
-    PlayMusicStream(MysticCoreData.Title_Music);
-
-
-    MysticPlayerOne.Lives = 4;
-    MysticPlayerOne.HeartVisable = true;
 
     while (!WindowShouldClose()){ 
-
-        seconds += GetFrameTime();
-
-        #if (defined(RPI_BUILD))
-            SetShaderValue(Core_Shaders.Water, secondsLoc, &seconds, SHADER_UNIFORM_FLOAT);
-        #endif
-        #if (defined(LINUX_BUILD))
-            SetShaderValue(Core_Shaders.Water, secondsLoc, &seconds, UNIFORM_FLOAT);
-        #endif
-        #if (defined(WINDOWS_BUILD))
-            SetShaderValue(Core_Shaders.Water, secondsLoc, &seconds, UNIFORM_FLOAT);
-        #endif
 
         BeginDrawing();
 
         ClearBackground(BLACK);
 
-        if (MysticCoreData.Level_ID == 0){
+        if (MysticCoreData.LevelID == 0){
 
             if (Start){
-                MysticDrawLevel(Level_1_Data.Data,Level_1_Data.LevelWidth, Level_1_Data.LevelHeight,  Level_1_Data.ShaderBlock1 , Level_1_Data.ShaderBlock2 , Level_1_Data.ShaderBlock3 , Level_1_Data.ShaderBlock4);
+                MysticDrawLevel(Level1Data.Data,Level1Data.LevelWidth, Level1Data.LevelHeight,  Level1Data.ShaderBlock1 , Level1Data.ShaderBlock2 , Level1Data.ShaderBlock3 , Level1Data.ShaderBlock4);
                 MysticCamera.XOffset ++;
 
                 if (MysticCamera.XOffset >= 1280){
@@ -279,7 +215,7 @@ int main (void){
                         break;
                 }
 
-                if (MysticCoreData.Animation_Ticker <= 50){
+                if (MysticCoreData.AnimationTicker <= 50){
                     DrawText("                              Space" , 50 , 400 , 20 , WHITE);
                 }
                 if (MysticControls.Shoot){
@@ -297,19 +233,21 @@ int main (void){
             else {
 
                 if (!Help && !MysticCoreData.BonusMenu){
-                    UpdateMusicStream(MysticCoreData.Title_Music);
-                    MysticDrawLevel(Level_1_Data.Data,Level_1_Data.LevelWidth, Level_1_Data.LevelHeight,  Level_1_Data.ShaderBlock1 , Level_1_Data.ShaderBlock2 , Level_1_Data.ShaderBlock3 , Level_1_Data.ShaderBlock4);
+
+                    UpdateMusicStream(MysticCoreData.TitleMusic);
+                    MysticDrawLevel(Level1Data.Data,Level1Data.LevelWidth, Level1Data.LevelHeight,  Level1Data.ShaderBlock1 , Level1Data.ShaderBlock2 , Level1Data.ShaderBlock3 , Level1Data.ShaderBlock4);
+                    
                     DrawText(TextSubtext("Wi",0,TextAnimationValue / 20), 288 - HomeScreenScroller  , 200 + HomeScreenScroller , 32 + HomeScreenScroller / 4 , WHITE);
                     DrawText(TextSubtext("sp",0,TextAnimationValue / 20), 320 - HomeScreenScroller + HomeScreenScroller / 4 , 200 + HomeScreenScroller  , 32 + HomeScreenScroller / 4  , BLUE);
-                    //DrawText(TextSubtext("HD Edition",0,TextAnimationValue / 3) , (640 / 2 - MeasureText("HD Edition" , 20) / 2) - HomeScreenScroller,250+ HomeScreenScroller, 20 + HomeScreenScroller / 4 , SKYBLUE);
+                    
                     if (!IsGamepadAvailable(0)){
-                        if (MysticCoreData.Animation_Ticker >= 50) DrawText(TextSubtext("Press Space",0,TextAnimationValue / 2), 270 - HomeScreenScroller  , 300 + HomeScreenScroller , 16 + HomeScreenScroller / 8 , WHITE);
+                        if (MysticCoreData.AnimationTicker >= 50) DrawText(TextSubtext("Press Space",0,TextAnimationValue / 2), 270 - HomeScreenScroller  , 300 + HomeScreenScroller , 16 + HomeScreenScroller / 8 , WHITE);
                     }
                     else {
-                        if (MysticCoreData.Animation_Ticker >= 50) DrawText(TextSubtext("Press RT",0,TextAnimationValue / 2), (640/2 - MeasureText("Press RT" , 16)/2) - HomeScreenScroller  , 300 + HomeScreenScroller , 16 + HomeScreenScroller / 8 , WHITE);
+                        if (MysticCoreData.AnimationTicker >= 50) DrawText(TextSubtext("Press RT",0,TextAnimationValue / 2), (640/2 - MeasureText("Press RT" , 16)/2) - HomeScreenScroller  , 300 + HomeScreenScroller , 16 + HomeScreenScroller / 8 , WHITE);
                     }
-                    MysticCamera.XOffset ++;
 
+                    MysticCamera.XOffset ++;
                     if (MysticCamera.XOffset >= 1280){
                         MysticCamera.XOffset = 0;
                     }
@@ -321,7 +259,7 @@ int main (void){
                         HomeScreenScroller = 2;
                     }
 
-                    if (!BonusLevels){
+                    if (!BonusLevelsEnabled){
 
                         DrawText("Story" , 20  - HomeScreenScroller + HomeScreenScroller / 4 , 450  + HomeScreenScroller , 20 + HomeScreenScroller / 4 , WHITE);
 
@@ -350,25 +288,28 @@ int main (void){
                     else{
                         if (HomeScreenScroller != 0){
                             rlViewport(0,0,640,500);
-                            MysticCoreData.Level_ID = 1;
+                            MysticCoreData.LevelID = 1;
                             MysticCamera.XOffset = 0;
-                            StopMusicStream(MysticCoreData.Title_Music);
-                            PlayMusicStream(MysticCoreData.Game_Music2);
+                            StopMusicStream(MysticCoreData.TitleMusic);
+                            PlayMusicStream(MysticCoreData.GameMusic2);
                         }
                     }
 
                 }
                 if (Help){
-                    MysticDrawLevel(Level_1_Data.Data,Level_1_Data.LevelWidth, Level_1_Data.LevelHeight,  Level_1_Data.ShaderBlock1 , Level_1_Data.ShaderBlock2 , Level_1_Data.ShaderBlock3 , Level_1_Data.ShaderBlock4);
+                    MysticDrawLevel(Level1Data.Data,Level1Data.LevelWidth, Level1Data.LevelHeight,  Level1Data.ShaderBlock1 , Level1Data.ShaderBlock2 , Level1Data.ShaderBlock3 , Level1Data.ShaderBlock4);
+                    
                     MysticCamera.XOffset ++;
-
                     if (MysticCamera.XOffset >= 1280){
                         MysticCamera.XOffset = 0;
                     }
+
                     DrawText("Back" , 20 , 20 , 20 , WHITE);
+
                     if (GetCollision(20 , 20 , 50 , 20 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5, 5 ) && MysticGetVirtualMouseClick(MOUSE_LEFT_BUTTON)){
                         Help = false;
                     }
+
                     DrawText("Controls" , 80 , 100 , 25 , WHITE);
 
                     DrawText("Jump : Up Arrow Key" , 100 , 200 , 20 , WHITE);
@@ -377,17 +318,15 @@ int main (void){
                     DrawText("Shoot ( Normal Weapon ) : Space Key" , 100 , 270 , 20 , WHITE);
                     DrawText("Shoot ( Boss Weapon ) : Left Click" , 100 , 290 , 20 , WHITE);
 
-
                 }
                 if (MysticCoreData.BonusMenu && !MysticCoreData.LevelEditor ){
-                    MysticDrawLevel(Level_15_Data.Data,Level_15_Data.LevelWidth, Level_15_Data.LevelHeight,  Level_15_Data.ShaderBlock1 , Level_15_Data.ShaderBlock2 , Level_15_Data.ShaderBlock3 , Level_15_Data.ShaderBlock4);
+
+                    MysticDrawLevel(Level15Data.Data,Level15Data.LevelWidth, Level15Data.LevelHeight,  Level15Data.ShaderBlock1 , Level15Data.ShaderBlock2 , Level15Data.ShaderBlock3 , Level15Data.ShaderBlock4);
 
                     MysticCamera.XOffset ++;
-
                     if (MysticCamera.XOffset >= 640*2){
                         MysticCamera.XOffset = 0;
                     }
-
                 
                     if (!IsGamepadAvailable(0)){
                         DrawText("- >" , (600)  , 20, 20, PURPLE );
@@ -397,14 +336,12 @@ int main (void){
                             MysticCamera.XOffset = 0;
                         }
                     }
-                    
 
                     DrawText("< -" , (20)  , 20, 20, PURPLE );
 
                     if (GetCollision(20 , 20 , 20 , 20 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5 , 5) && MysticGetVirtualMouseClick(MOUSE_LEFT_BUTTON)){
                         MysticCoreData.BonusMenu = false;
                     }
-
 
                     DrawRectangleLines(50 , 90 + BonusScroll , 540 , 40 , WHITE );
 
@@ -417,7 +354,7 @@ int main (void){
                         DrawRectangleLines(50 , 90 + BonusScroll , 540 , 40 , RED );
 
                         if (MysticGetVirtualMouseClick(0)){
-                            CustomTransition(2 , 41, Level_Custom_Data);
+                            CustomTransition(2 , 41, LevelCustomData);
                         }
 
                     }
@@ -433,7 +370,7 @@ int main (void){
                         DrawRectangleLines(50 , 60 + 90 + BonusScroll , 540 , 40 , RED );
 
                         if (MysticGetVirtualMouseClick(0)){
-                            CustomTransition(2 , 31 , Bonus_Data_1);
+                            CustomTransition(2 , 31 , BonusData1);
                         }
 
                     }
@@ -444,24 +381,26 @@ int main (void){
 
                 if (MysticCoreData.LevelEditor){
 
-                    MysticDrawLevel(Level_Custom_Data.Data,Level_Custom_Data.LevelWidth, Level_Custom_Data.LevelHeight,  Level_Custom_Data.ShaderBlock1 , Level_Custom_Data.ShaderBlock2 , Level_Custom_Data.ShaderBlock3 , Level_Custom_Data.ShaderBlock4);
+                    MysticDrawLevel(LevelCustomData.Data,LevelCustomData.LevelWidth, LevelCustomData.LevelHeight,  LevelCustomData.ShaderBlock1 , LevelCustomData.ShaderBlock2 , LevelCustomData.ShaderBlock3 , LevelCustomData.ShaderBlock4);
                     
                     if (MysticControls.Left){
-                        MysticCamera.XOffset -= MVMS;
+                        MysticCamera.XOffset -= LevelEditorXOffset;
                     }
+
                     if (MysticControls.Right){
-                        MysticCamera.XOffset += MVMS;
+                        MysticCamera.XOffset += LevelEditorXOffset;
                     }
 
                     if (IsKeyPressed(KEY_X)){
-                        if (MVMS != 12 )MVMS ++;
+                        if (LevelEditorXOffset != 12 )LevelEditorXOffset ++;
                     }
                     if (IsKeyPressed(KEY_Z)){
-                        if (MVMS != 1 )MVMS --;
+                        if (LevelEditorXOffset != 1 )LevelEditorXOffset --;
                         
                     }
+
                     if (MysticGetVirtualMouseClick(MOUSE_LEFT_BUTTON) && MysticGetVirtualMouseX() <= 490 && !GetCollision(20 , 20 , 20 , 20 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5 , 5)){
-                        Level_Custom_Data.Data[MysticGetVirtualMouseY() / 20 * Level_1_Data.LevelWidth + MysticGetVirtualMouseX() / 20 + MysticCamera.XOffset / 20 ] = CT;
+                        LevelCustomData.Data[MysticGetVirtualMouseY() / 20 * Level1Data.LevelWidth + MysticGetVirtualMouseX() / 20 + MysticCamera.XOffset / 20 ] = CurrrentSelectedTile;
                     }
 
                     DrawRectangle(640 - 150, 0 ,150 ,500 ,SPRO2);
@@ -478,69 +417,69 @@ int main (void){
                                 switch (y)
                                 {
                                     case 0:
-                                        if (x == 0)CT = L'1';
-                                        if (x == 1)CT = L'5';
+                                        if (x == 0)CurrrentSelectedTile = L'1';
+                                        if (x == 1)CurrrentSelectedTile = L'5';
                                         break;
                                     case 1:
-                                        if (x == 0)CT = L'4';
-                                        if (x == 1)CT = L'E';    
+                                        if (x == 0)CurrrentSelectedTile = L'4';
+                                        if (x == 1)CurrrentSelectedTile = L'E';    
                                         break;
                                     case 2:
-                                        if (x == 0)CT = L'A';
-                                        if (x == 1)CT = L'B';    
+                                        if (x == 0)CurrrentSelectedTile = L'A';
+                                        if (x == 1)CurrrentSelectedTile = L'B';    
                                         break;
                                     case 3:
-                                        if (x == 0)CT = L'C';
-                                        if (x == 1)CT = L'D';    
+                                        if (x == 0)CurrrentSelectedTile = L'C';
+                                        if (x == 1)CurrrentSelectedTile = L'D';    
                                         break;
                                     case 4:
-                                        if (x == 0)CT = L'G';
-                                        if (x == 1)CT = L'H';    
+                                        if (x == 0)CurrrentSelectedTile = L'G';
+                                        if (x == 1)CurrrentSelectedTile = L'H';    
                                         break;
                                     case 5:
-                                        if (x == 0)CT = L'M';
-                                        if (x == 1)CT = L'I';    
+                                        if (x == 0)CurrrentSelectedTile = L'M';
+                                        if (x == 1)CurrrentSelectedTile = L'I';    
                                         break;
                                     case 6:
-                                        if (x == 0)CT = L'2';
-                                        if (x == 1)CT = L'3';    
+                                        if (x == 0)CurrrentSelectedTile = L'2';
+                                        if (x == 1)CurrrentSelectedTile = L'3';    
                                         break;
                                     case 7:
-                                        if (x == 0)CT = L'6';
-                                        if (x == 1)CT = L'7';    
+                                        if (x == 0)CurrrentSelectedTile = L'6';
+                                        if (x == 1)CurrrentSelectedTile = L'7';    
                                         break;
                                     case 8:
-                                        if (x == 0)CT = L'8';
-                                        if (x == 1)CT = L'9';    
+                                        if (x == 0)CurrrentSelectedTile = L'8';
+                                        if (x == 1)CurrrentSelectedTile = L'9';    
                                         break;
                                     case 9:
-                                        if (x == 0)CT = L'F';
-                                        if (x == 1)CT = L'J';    
+                                        if (x == 0)CurrrentSelectedTile = L'F';
+                                        if (x == 1)CurrrentSelectedTile = L'J';    
                                         break;
                                     case 10:
-                                        if (x == 0)CT = L'K';
-                                        if (x == 1)CT = L'L';    
+                                        if (x == 0)CurrrentSelectedTile = L'K';
+                                        if (x == 1)CurrrentSelectedTile = L'L';    
                                         break;
                                     case 11:
-                                        if (x == 0)CT = L'N';
-                                        if (x == 1)CT = L'O';    
+                                        if (x == 0)CurrrentSelectedTile = L'N';
+                                        if (x == 1)CurrrentSelectedTile = L'O';    
                                         break;
                                     case 12:
-                                        if (x == 0)CT = L'P';
-                                        if (x == 1)CT = L'0'; 
+                                        if (x == 0)CurrrentSelectedTile = L'P';
+                                        if (x == 1)CurrrentSelectedTile = L'0'; 
                                         break;
 
                                     case 13:
-                                        if (x == 0)CT = L'Z';
-                                        if (x == 1)CT = L'%'; 
+                                        if (x == 0)CurrrentSelectedTile = L'Z';
+                                        if (x == 1)CurrrentSelectedTile = L'%'; 
                                         break;
                                     case 14:
-                                        if (x == 0)CT = L'+';
-                                        if (x == 1)CT = L'&'; 
+                                        if (x == 0)CurrrentSelectedTile = L'+';
+                                        if (x == 1)CurrrentSelectedTile = L'&'; 
                                         break;
                                     case 15:
-                                        if (x == 0)CT = L'^';
-                                        if (x == 1)CT = L'!'; 
+                                        if (x == 0)CurrrentSelectedTile = L'^';
+                                        if (x == 1)CurrrentSelectedTile = L'!'; 
                                         break;
                                     default:
                                         
@@ -553,7 +492,6 @@ int main (void){
                     }
 
                     DrawText("#" , 495 + 16 , 5 + 10 + Scroller , 50 , GREEN);
-
 
                     DrawText("*" , 495 + 75 + 16 , 5 + 10 + Scroller, 50 , BROWN);
 
@@ -635,10 +573,9 @@ int main (void){
                     if (GetCollision(495 + (0*75), 10 + (4.6*75) , 140 , 65 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5 , 5) && MysticGetVirtualMouseClick(MOUSE_LEFT_BUTTON)){
                         DrawRectangleLines(495 + (0*75), 10 + (4.6*75) , 140 , 65, RED);
                         wofstream outfile;
-                        outfile.open("LevelData/Level_Custom/Level_Custom.mpak");
-                        outfile << Level_Custom_Data.Data << "\n";
-                        cout << "Saved";
-                        Scount = 120;
+                        outfile.open("LevelData/LevelCustom/Level_Custom.mpak");
+                        outfile << LevelCustomData.Data << "\n";
+                        SaveMessageCounter = 120;
                     }
 
                     if (GetCollision(495 + (0*75), 10 + (4.6*75) , 140 , 65 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5 , 5)){
@@ -646,41 +583,43 @@ int main (void){
                     }
 
                     if (GetCollision(495 + (0*75), 10 + (345+75), 140 , 65 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5 , 5) && MysticGetVirtualMouseClick(MOUSE_LEFT_BUTTON)){
+                        
                         DrawRectangleLines(495 + (0*75), 10 + (345+75), 140 , 65, RED);
 
                         wofstream outfile;
-                        //system("cd ; mkdir Wisp; cd Wisp ; mkdir Export ; cd Export ; echo '' >>  Level_Custom.mpak");
+
                         #if (defined(LINUX_BUILD))
                             system("mkdir Export ; cd Export ; echo '' >> Level_Custom.mpak");
-                            system("cp -r LevelData/Level_Custom/ProgrammableComponents Export");
-                            outfile.open("Export/Level_Custom.mpak");
-                            outfile << Level_Custom_Data.Data << "\n";
-                            cout << "Saved";
+                            system("cp -r LevelData/LevelCustom/ProgrammableComponents Export");
+
+                            outfile.open("Export/LevelCustom.mpak");
+                            outfile << LevelCustomData.Data << "\n";
+
                         #endif
+
                         #if (defined(WINDOWS_BUILD))
                             remove("Export");
                             system("mkdir Export");
-                            //copy("LevelData/Level_Custom", "Export");
 
                             outfile.open("Export/Level_Custom.mpak");
-                            outfile << Level_Custom_Data.Data << "\n";
-                            cout << "Saved";
+                            outfile << LevelCustomData.Data << "\n";
+
                         #endif
 
-                        Ecount = 120;
+                        ExportMessageCounter = 120;
 
                     }
                     if (GetCollision(495 + (0*75), 10 + (345+75) , 140 , 65 , MysticGetVirtualMouseX() , MysticGetVirtualMouseY() , 5 , 5)){
                         DrawRectangleLines(495 + (0*75), 10 + (345+75), 140 , 65, WHITE);
                     }
 
-                    if (Ecount != 0){
-                        Ecount --;
-                        DrawText("Level Exported to ( Export/Level_Custom.mpak ) ", 640 / 2 - (48 * 20 / 4) , 200 , 20 , WHITE );
+                    if (ExportMessageCounter != 0){
+                        ExportMessageCounter --;
+                        DrawText("Level Exported to ( Export/LevelCustom.mpak ) ", 640 / 2 - (48 * 20 / 4) , 200 , 20 , WHITE );
                     }
 
-                    if (Scount != 0){
-                        Scount --;
+                    if (SaveMessageCounter != 0){
+                        SaveMessageCounter --;
                         DrawText("                    Saved                      ", 640 / 2 - (48 * 20 / 4) , 200 , 20 , WHITE );
                     }
 
@@ -712,113 +651,104 @@ int main (void){
 
         if (MysticBoss.Alive){
 
-            switch (MysticCoreData.Level_ID){
+            switch (MysticCoreData.LevelID){
 
                 case 1:
-                    MysticDrawLevel(Level_1_Data.Data,Level_1_Data.LevelWidth, Level_1_Data.LevelHeight,  Level_1_Data.ShaderBlock1 , Level_1_Data.ShaderBlock2 , Level_1_Data.ShaderBlock3 , Level_1_Data.ShaderBlock4);
+                    MysticDrawLevel(Level1Data.Data,Level1Data.LevelWidth, Level1Data.LevelHeight,  Level1Data.ShaderBlock1 , Level1Data.ShaderBlock2 , Level1Data.ShaderBlock3 , Level1Data.ShaderBlock4);
                     break;
-
                 case 2:
-                    MysticDrawLevel(Level_2_Data.Data,Level_2_Data.LevelWidth, Level_2_Data.LevelHeight,  Level_2_Data.ShaderBlock1 , Level_2_Data.ShaderBlock2 , Level_2_Data.ShaderBlock3 , Level_2_Data.ShaderBlock4);
+                    MysticDrawLevel(Level2Data.Data,Level2Data.LevelWidth, Level2Data.LevelHeight,  Level2Data.ShaderBlock1 , Level2Data.ShaderBlock2 , Level2Data.ShaderBlock3 , Level2Data.ShaderBlock4);
                     break;
-
                 case 3:
-                    MysticDrawLevel(Level_3_Data.Data,Level_3_Data.LevelWidth, Level_3_Data.LevelHeight,  Level_3_Data.ShaderBlock1 , Level_3_Data.ShaderBlock2 , Level_3_Data.ShaderBlock3 , Level_3_Data.ShaderBlock4);
+                    MysticDrawLevel(Level3Data.Data,Level3Data.LevelWidth, Level3Data.LevelHeight,  Level3Data.ShaderBlock1 , Level3Data.ShaderBlock2 , Level3Data.ShaderBlock3 , Level3Data.ShaderBlock4);
                     break;
-
                 case 4:
-                    MysticDrawLevel(Level_4_Data.Data,Level_4_Data.LevelWidth, Level_4_Data.LevelHeight,  Level_4_Data.ShaderBlock1 , Level_4_Data.ShaderBlock2 , Level_4_Data.ShaderBlock3 , Level_4_Data.ShaderBlock4);
+                    MysticDrawLevel(Level4Data.Data,Level4Data.LevelWidth, Level4Data.LevelHeight,  Level4Data.ShaderBlock1 , Level4Data.ShaderBlock2 , Level4Data.ShaderBlock3 , Level4Data.ShaderBlock4);
                     break;
-
                 case 5:
-                    MysticDrawLevel(Level_5_Data.Data,Level_5_Data.LevelWidth, Level_5_Data.LevelHeight,  Level_5_Data.ShaderBlock1 , Level_5_Data.ShaderBlock2 , Level_5_Data.ShaderBlock3 , Level_5_Data.ShaderBlock4);
+                    MysticDrawLevel(Level5Data.Data,Level5Data.LevelWidth, Level5Data.LevelHeight,  Level5Data.ShaderBlock1 , Level5Data.ShaderBlock2 , Level5Data.ShaderBlock3 , Level5Data.ShaderBlock4);
                     break;
-
                 case 6:
-                    MysticDrawLevel(Level_6_Data.Data,Level_6_Data.LevelWidth, Level_6_Data.LevelHeight,  Level_6_Data.ShaderBlock1 , Level_6_Data.ShaderBlock2 , Level_6_Data.ShaderBlock3 , Level_6_Data.ShaderBlock4);
+                    MysticDrawLevel(Level6Data.Data,Level6Data.LevelWidth, Level6Data.LevelHeight,  Level6Data.ShaderBlock1 , Level6Data.ShaderBlock2 , Level6Data.ShaderBlock3 , Level6Data.ShaderBlock4);
                     break;
-
                 case 7:
-                    MysticDrawLevel(Level_7_Data.Data,Level_7_Data.LevelWidth, Level_7_Data.LevelHeight,  Level_7_Data.ShaderBlock1 , Level_7_Data.ShaderBlock2 , Level_7_Data.ShaderBlock3 , Level_7_Data.ShaderBlock4);
+                    MysticDrawLevel(Level7Data.Data,Level7Data.LevelWidth, Level7Data.LevelHeight,  Level7Data.ShaderBlock1 , Level7Data.ShaderBlock2 , Level7Data.ShaderBlock3 , Level7Data.ShaderBlock4);
                     break;
-
                 case 8:
-                    MysticDrawLevel(Level_8_Data.Data,Level_8_Data.LevelWidth, Level_8_Data.LevelHeight,  Level_8_Data.ShaderBlock1 , Level_8_Data.ShaderBlock2 , Level_8_Data.ShaderBlock3 , Level_8_Data.ShaderBlock4);
+                    MysticDrawLevel(Level8Data.Data,Level8Data.LevelWidth, Level8Data.LevelHeight,  Level8Data.ShaderBlock1 , Level8Data.ShaderBlock2 , Level8Data.ShaderBlock3 , Level8Data.ShaderBlock4);
                     break;
-
                 case 9:
-                    MysticDrawLevel(Level_9_Data.Data,Level_9_Data.LevelWidth, Level_9_Data.LevelHeight,  Level_9_Data.ShaderBlock1 , Level_9_Data.ShaderBlock2 , Level_9_Data.ShaderBlock3 , Level_9_Data.ShaderBlock4);
+                    MysticDrawLevel(Level9Data.Data,Level9Data.LevelWidth, Level9Data.LevelHeight,  Level9Data.ShaderBlock1 , Level9Data.ShaderBlock2 , Level9Data.ShaderBlock3 , Level9Data.ShaderBlock4);
                     break;
-
                 case 10:
-                    MysticDrawLevel(Level_10_Data.Data,Level_10_Data.LevelWidth, Level_10_Data.LevelHeight,  Level_10_Data.ShaderBlock1 , Level_10_Data.ShaderBlock2 , Level_10_Data.ShaderBlock3 , Level_10_Data.ShaderBlock4);
+                    MysticDrawLevel(Level10Data.Data,Level10Data.LevelWidth, Level10Data.LevelHeight,  Level10Data.ShaderBlock1 , Level10Data.ShaderBlock2 , Level10Data.ShaderBlock3 , Level10Data.ShaderBlock4);
                     break;
                 case 11:
-                    MysticDrawLevel(Level_11_Data.Data,Level_11_Data.LevelWidth, Level_11_Data.LevelHeight,  Level_11_Data.ShaderBlock1 , Level_11_Data.ShaderBlock2 , Level_11_Data.ShaderBlock3 , Level_11_Data.ShaderBlock4);
+                    MysticDrawLevel(Level11Data.Data,Level11Data.LevelWidth, Level11Data.LevelHeight,  Level11Data.ShaderBlock1 , Level11Data.ShaderBlock2 , Level11Data.ShaderBlock3 , Level11Data.ShaderBlock4);
                     break;
                 case 12:
-                    MysticDrawLevel(Level_12_Data.Data,Level_12_Data.LevelWidth, Level_12_Data.LevelHeight,  Level_12_Data.ShaderBlock1 , Level_12_Data.ShaderBlock2 , Level_12_Data.ShaderBlock3 , Level_12_Data.ShaderBlock4);
+                    MysticDrawLevel(Level12Data.Data,Level12Data.LevelWidth, Level12Data.LevelHeight,  Level12Data.ShaderBlock1 , Level12Data.ShaderBlock2 , Level12Data.ShaderBlock3 , Level12Data.ShaderBlock4);
                     break;
                 case 13:
-                    MysticDrawLevel(Level_13_Data.Data,Level_13_Data.LevelWidth, Level_13_Data.LevelHeight,  Level_13_Data.ShaderBlock1 , Level_13_Data.ShaderBlock2 , Level_13_Data.ShaderBlock3 , Level_13_Data.ShaderBlock4);
+                    MysticDrawLevel(Level13Data.Data,Level13Data.LevelWidth, Level13Data.LevelHeight,  Level13Data.ShaderBlock1 , Level13Data.ShaderBlock2 , Level13Data.ShaderBlock3 , Level13Data.ShaderBlock4);
                     break;
                 case 14:
-                    MysticDrawLevel(Level_14_Data.Data,Level_14_Data.LevelWidth, Level_14_Data.LevelHeight,  Level_14_Data.ShaderBlock1 , Level_14_Data.ShaderBlock2 , Level_14_Data.ShaderBlock3 , Level_14_Data.ShaderBlock4);
+                    MysticDrawLevel(Level14Data.Data,Level14Data.LevelWidth, Level14Data.LevelHeight,  Level14Data.ShaderBlock1 , Level14Data.ShaderBlock2 , Level14Data.ShaderBlock3 , Level14Data.ShaderBlock4);
                     break;
                 case 15:
-                    MysticDrawLevel(Level_15_Data.Data,Level_15_Data.LevelWidth, Level_15_Data.LevelHeight,  Level_15_Data.ShaderBlock1 , Level_15_Data.ShaderBlock2 , Level_15_Data.ShaderBlock3 , Level_15_Data.ShaderBlock4);
+                    MysticDrawLevel(Level15Data.Data,Level15Data.LevelWidth, Level15Data.LevelHeight,  Level15Data.ShaderBlock1 , Level15Data.ShaderBlock2 , Level15Data.ShaderBlock3 , Level15Data.ShaderBlock4);
                     break;
                 case 16:
-                    MysticDrawLevel(Level_16_Data.Data,Level_16_Data.LevelWidth, Level_16_Data.LevelHeight,  Level_16_Data.ShaderBlock1 , Level_16_Data.ShaderBlock2 , Level_16_Data.ShaderBlock3 , Level_16_Data.ShaderBlock4);
+                    MysticDrawLevel(Level16Data.Data,Level16Data.LevelWidth, Level16Data.LevelHeight,  Level16Data.ShaderBlock1 , Level16Data.ShaderBlock2 , Level16Data.ShaderBlock3 , Level16Data.ShaderBlock4);
                     break;
                 case 17:
-                    MysticDrawLevel(Level_17_Data.Data,Level_17_Data.LevelWidth, Level_17_Data.LevelHeight,  Level_17_Data.ShaderBlock1 , Level_17_Data.ShaderBlock2 , Level_17_Data.ShaderBlock3 , Level_17_Data.ShaderBlock4);
+                    MysticDrawLevel(Level17Data.Data,Level17Data.LevelWidth, Level17Data.LevelHeight,  Level17Data.ShaderBlock1 , Level17Data.ShaderBlock2 , Level17Data.ShaderBlock3 , Level17Data.ShaderBlock4);
                     break;
                 case 18:
-                    MysticDrawLevel(Level_18_Data.Data,Level_18_Data.LevelWidth, Level_18_Data.LevelHeight,  Level_18_Data.ShaderBlock1 , Level_18_Data.ShaderBlock2 , Level_18_Data.ShaderBlock3 , Level_18_Data.ShaderBlock4);
+                    MysticDrawLevel(Level18Data.Data,Level18Data.LevelWidth, Level18Data.LevelHeight,  Level18Data.ShaderBlock1 , Level18Data.ShaderBlock2 , Level18Data.ShaderBlock3 , Level18Data.ShaderBlock4);
                     break;
                 case 19:
-                    MysticDrawLevel(Level_19_Data.Data,Level_19_Data.LevelWidth, Level_19_Data.LevelHeight,  Level_19_Data.ShaderBlock1 , Level_19_Data.ShaderBlock2 , Level_19_Data.ShaderBlock3 , Level_19_Data.ShaderBlock4);
+                    MysticDrawLevel(Level19Data.Data,Level19Data.LevelWidth, Level19Data.LevelHeight,  Level19Data.ShaderBlock1 , Level19Data.ShaderBlock2 , Level19Data.ShaderBlock3 , Level19Data.ShaderBlock4);
                     break;
                 case 20:
-                    MysticDrawLevel(Level_20_Data.Data,Level_20_Data.LevelWidth, Level_20_Data.LevelHeight,  Level_20_Data.ShaderBlock1 , Level_20_Data.ShaderBlock2 , Level_20_Data.ShaderBlock3 , Level_20_Data.ShaderBlock4);
+                    MysticDrawLevel(Level20Data.Data,Level20Data.LevelWidth, Level20Data.LevelHeight,  Level20Data.ShaderBlock1 , Level20Data.ShaderBlock2 , Level20Data.ShaderBlock3 , Level20Data.ShaderBlock4);
                     break;
                 case 21:
-                    MysticDrawLevel(Level_21_Data.Data,Level_21_Data.LevelWidth, Level_21_Data.LevelHeight,  Level_21_Data.ShaderBlock1 , Level_21_Data.ShaderBlock2 , Level_21_Data.ShaderBlock3 , Level_21_Data.ShaderBlock4);
+                    MysticDrawLevel(Level21Data.Data,Level21Data.LevelWidth, Level21Data.LevelHeight,  Level21Data.ShaderBlock1 , Level21Data.ShaderBlock2 , Level21Data.ShaderBlock3 , Level21Data.ShaderBlock4);
                     break;
                 case 22:
-                    MysticDrawLevel(Level_22_Data.Data,Level_22_Data.LevelWidth, Level_22_Data.LevelHeight,  Level_22_Data.ShaderBlock1 , Level_22_Data.ShaderBlock2 , Level_22_Data.ShaderBlock3 , Level_22_Data.ShaderBlock4);
+                    MysticDrawLevel(Level22Data.Data,Level22Data.LevelWidth, Level22Data.LevelHeight,  Level22Data.ShaderBlock1 , Level22Data.ShaderBlock2 , Level22Data.ShaderBlock3 , Level22Data.ShaderBlock4);
                     break;
                 case 23:
-                    MysticDrawLevel(Level_23_Data.Data,Level_23_Data.LevelWidth, Level_23_Data.LevelHeight,  Level_23_Data.ShaderBlock1 , Level_23_Data.ShaderBlock2 , Level_23_Data.ShaderBlock3 , Level_23_Data.ShaderBlock4);
+                    MysticDrawLevel(Level23Data.Data,Level23Data.LevelWidth, Level23Data.LevelHeight,  Level23Data.ShaderBlock1 , Level23Data.ShaderBlock2 , Level23Data.ShaderBlock3 , Level23Data.ShaderBlock4);
                     break;
                 case 24:
-                    MysticDrawLevel(Level_24_Data.Data,Level_24_Data.LevelWidth, Level_24_Data.LevelHeight,  Level_24_Data.ShaderBlock1 , Level_24_Data.ShaderBlock2 , Level_24_Data.ShaderBlock3 , Level_24_Data.ShaderBlock4);
+                    MysticDrawLevel(Level24Data.Data,Level24Data.LevelWidth, Level24Data.LevelHeight,  Level24Data.ShaderBlock1 , Level24Data.ShaderBlock2 , Level24Data.ShaderBlock3 , Level24Data.ShaderBlock4);
                     break;
                 case 25:
-                    MysticDrawLevel(Level_25_Data.Data,Level_25_Data.LevelWidth, Level_25_Data.LevelHeight,  Level_25_Data.ShaderBlock1 , Level_25_Data.ShaderBlock2 , Level_25_Data.ShaderBlock3 , Level_25_Data.ShaderBlock4);
+                    MysticDrawLevel(Level25Data.Data,Level25Data.LevelWidth, Level25Data.LevelHeight,  Level25Data.ShaderBlock1 , Level25Data.ShaderBlock2 , Level25Data.ShaderBlock3 , Level25Data.ShaderBlock4);
                     break;
                 case 26:
-                    MysticDrawLevel(Level_26_Data.Data,Level_26_Data.LevelWidth, Level_26_Data.LevelHeight,  Level_26_Data.ShaderBlock1 , Level_26_Data.ShaderBlock2 , Level_26_Data.ShaderBlock3 , Level_26_Data.ShaderBlock4);
+                    MysticDrawLevel(Level26Data.Data,Level26Data.LevelWidth, Level26Data.LevelHeight,  Level26Data.ShaderBlock1 , Level26Data.ShaderBlock2 , Level26Data.ShaderBlock3 , Level26Data.ShaderBlock4);
                     break;
                 case 27:
-                    MysticDrawLevel(Level_27_Data.Data,Level_27_Data.LevelWidth, Level_27_Data.LevelHeight,  Level_27_Data.ShaderBlock1 , Level_27_Data.ShaderBlock2 , Level_27_Data.ShaderBlock3 , Level_27_Data.ShaderBlock4);
+                    MysticDrawLevel(Level27Data.Data,Level27Data.LevelWidth, Level27Data.LevelHeight,  Level27Data.ShaderBlock1 , Level27Data.ShaderBlock2 , Level27Data.ShaderBlock3 , Level27Data.ShaderBlock4);
                     break;
                 case 28:
-                    MysticDrawLevel(Level_28_Data.Data,Level_28_Data.LevelWidth, Level_28_Data.LevelHeight,  Level_28_Data.ShaderBlock1 , Level_28_Data.ShaderBlock2 , Level_28_Data.ShaderBlock3 , Level_28_Data.ShaderBlock4);
+                    MysticDrawLevel(Level28Data.Data,Level28Data.LevelWidth, Level28Data.LevelHeight,  Level28Data.ShaderBlock1 , Level28Data.ShaderBlock2 , Level28Data.ShaderBlock3 , Level28Data.ShaderBlock4);
                     break;
                 case 29:
-                    MysticDrawLevel(Level_29_Data.Data,Level_29_Data.LevelWidth, Level_29_Data.LevelHeight,  Level_29_Data.ShaderBlock1 , Level_29_Data.ShaderBlock2 , Level_29_Data.ShaderBlock3 , Level_29_Data.ShaderBlock4);
+                    MysticDrawLevel(Level29Data.Data,Level29Data.LevelWidth, Level29Data.LevelHeight,  Level29Data.ShaderBlock1 , Level29Data.ShaderBlock2 , Level29Data.ShaderBlock3 , Level29Data.ShaderBlock4);
                     break;
                 case 30:
-                    MysticDrawLevel(Level_30_Data.Data,Level_30_Data.LevelWidth, Level_30_Data.LevelHeight,  Level_30_Data.ShaderBlock1 , Level_30_Data.ShaderBlock2 , Level_30_Data.ShaderBlock3 , Level_30_Data.ShaderBlock4);
+                    MysticDrawLevel(Level30Data.Data,Level30Data.LevelWidth, Level30Data.LevelHeight,  Level30Data.ShaderBlock1 , Level30Data.ShaderBlock2 , Level30Data.ShaderBlock3 , Level30Data.ShaderBlock4);
                     break;
                 case 31:
-                    MysticDrawLevel(Bonus_Data_1.Data,Bonus_Data_1.LevelWidth, Bonus_Data_1.LevelHeight,  Bonus_Data_1.ShaderBlock1 , Bonus_Data_1.ShaderBlock2 , Bonus_Data_1.ShaderBlock3 , Bonus_Data_1.ShaderBlock4);
+                    MysticDrawLevel(BonusData1.Data,BonusData1.LevelWidth, BonusData1.LevelHeight,  BonusData1.ShaderBlock1 , BonusData1.ShaderBlock2 , BonusData1.ShaderBlock3 , BonusData1.ShaderBlock4);
                     MysticControls.VirtualMouseEnabled = false;
                     break;
                 case 41:
-                    MysticDrawLevel(Level_Custom_Data.Data,Level_Custom_Data.LevelWidth, Level_Custom_Data.LevelHeight,  Level_Custom_Data.ShaderBlock1 , Level_Custom_Data.ShaderBlock2 , Level_Custom_Data.ShaderBlock3 , Level_Custom_Data.ShaderBlock4);
+                    MysticDrawLevel(LevelCustomData.Data,LevelCustomData.LevelWidth, LevelCustomData.LevelHeight,  LevelCustomData.ShaderBlock1 , LevelCustomData.ShaderBlock2 , LevelCustomData.ShaderBlock3 , LevelCustomData.ShaderBlock4);
                     MysticControls.VirtualMouseEnabled = false;
                     break;
 
@@ -827,33 +757,33 @@ int main (void){
         
 
             if (MysticCoreData.TrackNumber == 2){
-                UpdateMusicStream(MysticCoreData.Game_Music1);
+                UpdateMusicStream(MysticCoreData.GameMusic1);
             }
 
             if (MysticCoreData.TrackNumber == 3){
-                UpdateMusicStream(MysticCoreData.Game_Music2);
+                UpdateMusicStream(MysticCoreData.GameMusic2);
             }
 
             switch (MysticCoreData.TrackNumber)
             {
                 case 2:
-                    UpdateMusicStream(MysticCoreData.Game_Music1);
+                    UpdateMusicStream(MysticCoreData.GameMusic1);
                     break;
                 case 3:
-                    UpdateMusicStream(MysticCoreData.Game_Music2);
+                    UpdateMusicStream(MysticCoreData.GameMusic2);
                     break;
                 case 4:
-                    UpdateMusicStream(MysticCoreData.Game_Music3);
+                    UpdateMusicStream(MysticCoreData.GameMusic3);
                     break;
                 case 5:
-                    UpdateMusicStream(MysticCoreData.Game_Music4);
+                    UpdateMusicStream(MysticCoreData.GameMusic4);
                     break;
 
             }
 
-            if (MysticCoreData.Level_ID != 1000 && MysticCoreData.Level_ID != 0 ){
-                UpdateMusicStream(MysticCoreData.Jump_Sound);
-                UpdateMusicStream(MysticCoreData.Kill_Sound);
+            if (MysticCoreData.LevelID != 1000 && MysticCoreData.LevelID != 0 ){
+                UpdateMusicStream(MysticCoreData.JumpSound);
+                UpdateMusicStream(MysticCoreData.KillSound);
                 UpdatePlayer();
                 UpdateEnemy();
                 UpdateTransitionTiles();
@@ -862,8 +792,8 @@ int main (void){
         }
 
         if (!MysticBoss.Alive){
-            // Splash Message 
 
+            // Splash Message 
 
             switch (TextCounter){
                 case 1:
@@ -887,28 +817,28 @@ int main (void){
          
                if (FrameCounter >= 320){
                     if (TextCounter == 3){
-                        StopMusicStream(MysticCoreData.Game_Music4);
-                        PlayMusicStream(MysticCoreData.Title_Music);
+                        StopMusicStream(MysticCoreData.GameMusic4);
+                        PlayMusicStream(MysticCoreData.TitleMusic);
                         MysticPlayerOne.CanShoot = false;
 
                         MysticPlayerOne.HasRocket = false;
 
                         MysticInit();
 
-                        ResetLevel(Level_1_Data);
+                        ResetLevel(Level1Data);
 
-                        ScanForSpawnTiles(Level_1_Data);
+                        ScanForSpawnTiles(Level1Data);
 
-                        ScanForEnemyTiles(Level_1_Data);
+                        ScanForEnemyTiles(Level1Data);
 
                         MysticPlayerOne.Lives = 3;
 
                         MysticPlayerOne.Health = 100;
-                        MysticCoreData.Level_ID = 0;
+                        MysticCoreData.LevelID = 0;
 
-                        StopMusicStream(MysticCoreData.Kill_Sound);
+                        StopMusicStream(MysticCoreData.KillSound);
 
-                        StopMusicStream(MysticCoreData.Shoot_Sound);
+                        StopMusicStream(MysticCoreData.ShootSound);
 
                         TextCounter = 1;
                         FrameCounter = 0;
@@ -940,79 +870,79 @@ int main (void){
 
 
             
-        if (MysticCoreData.Level_ID != -1 && MysticCoreData.Level_ID != 0){
+        if (MysticCoreData.LevelID != -1 && MysticCoreData.LevelID != 0){
 
-            if(MysticPlayerOne.direction != 4){
+            if(MysticPlayerOne.Direction != 4){
                 if( GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'0' && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'%' && GetTile((MysticPlayerOne.x + 40) / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'0' && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x + 20) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x + 20) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x + 20) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4  && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' ){
                     
                     if (GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) == L'Q' && MysticCoreData.BreakTimer <= 50){
-                        MysticPlayerOne.Velocity_Y = MysticCoreData.Gravity_Strength;
+                        MysticPlayerOne.VelocityY = MysticCoreData.GravityStrength;
                     }
                     else {
-                        MysticPlayerOne.Velocity_Y = 0; 
+                        MysticPlayerOne.VelocityY = 0; 
                         if (!MysticPlayerOne.IsJumping){
                             FixPlayerY();
                         }
                     }
                     if (MysticControls.Up && MysticPlayerOne.IsJumping == false){
                         MysticPlayerOne.IsJumping = true;
-                        PlayMusicStream(MysticCoreData.Jump_Sound);
+                        PlayMusicStream(MysticCoreData.JumpSound);
                         
                     }
                 }
                 else {
 
-                    MysticPlayerOne.Velocity_Y = MysticCoreData.Gravity_Strength;
+                    MysticPlayerOne.VelocityY = MysticCoreData.GravityStrength;
                 }
             }
             else {
                 if( GetTile((MysticPlayerOne.x + 40) / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x + 40) / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != L'!' && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' ){
-                    MysticPlayerOne.Velocity_Y = 0;
+                    MysticPlayerOne.VelocityY = 0;
                     if (!MysticPlayerOne.IsJumping){
                         FixPlayerY();
                     }
                     if (MysticControls.Up && MysticPlayerOne.IsJumping == false){
                         MysticPlayerOne.IsJumping = true;
-                        PlayMusicStream(MysticCoreData.Jump_Sound);
+                        PlayMusicStream(MysticCoreData.JumpSound);
                     }
                 }
                 else {
-                    MysticPlayerOne.Velocity_Y = MysticCoreData.Gravity_Strength;
+                    MysticPlayerOne.VelocityY = MysticCoreData.GravityStrength;
                 }
             }
             if( GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != L'%'  && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != L'!' ){
-                if (MysticPlayerOne.direction != 4 ){
-                    MysticPlayerOne.x -= MysticPlayerOne.Velocity_X;
+                if (MysticPlayerOne.Direction != 4 ){
+                    MysticPlayerOne.x -= MysticPlayerOne.VelocityX;
                 }
             }
 
             if( GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != L'%'  && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne. x+ 40) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != L'!' ){
-                if (MysticPlayerOne.direction != 4 ){
-                    MysticPlayerOne.x -= MysticPlayerOne.Velocity_X;
+                if (MysticPlayerOne.Direction != 4 ){
+                    MysticPlayerOne.x -= MysticPlayerOne.VelocityX;
                 }
             }
 
             if( GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != L'%'  && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne.x + 40 ) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != L'!' ){
-                if (MysticPlayerOne.direction != 4 ){
-                    MysticPlayerOne.x -= MysticPlayerOne.Velocity_X;
+                if (MysticPlayerOne.Direction != 4 ){
+                    MysticPlayerOne.x -= MysticPlayerOne.VelocityX;
                 }
             }
 
             if( GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != L'%'  && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) != L'!'   ){
-                if (MysticPlayerOne.direction != 2){
-                    MysticPlayerOne.x += abs(MysticPlayerOne.Velocity_X) ;
+                if (MysticPlayerOne.Direction != 2){
+                    MysticPlayerOne.x += abs(MysticPlayerOne.VelocityX) ;
                 }
             }
 
             if( GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  40) / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y -  40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  40) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  40) / 20, CurrentData.LevelData) != L'%'  && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 40) / 20, CurrentData.LevelData) != L'!'  ){
-                if (MysticPlayerOne.direction != 2){
-                    MysticPlayerOne.x += abs(MysticPlayerOne.Velocity_X) ;
+                if (MysticPlayerOne.Direction != 2){
+                    MysticPlayerOne.x += abs(MysticPlayerOne.VelocityX) ;
                 }
             }
 
             if( GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  60) / 20, CurrentData.LevelData) != L'0' && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  60) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4 && GetTile((MysticPlayerOne.x ) / 20 ,(MysticPlayerOne.y -  60) / 20, CurrentData.LevelData) != L'%' && GetTile(MysticPlayerOne.x / 20 ,MysticPlayerOne.y / 20, CurrentData.LevelData) != L'!' &&  GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 60) / 20, CurrentData.LevelData) != L'!'){
-                if (MysticPlayerOne.direction != 2){
-                    MysticPlayerOne.x += abs(MysticPlayerOne.Velocity_X) ;
+                if (MysticPlayerOne.Direction != 2){
+                    MysticPlayerOne.x += abs(MysticPlayerOne.VelocityX) ;
                 }
             }
 
@@ -1026,12 +956,12 @@ int main (void){
 
                 MysticPlayerOne.CanShoot = true;
 
-                if (MysticCoreData.Level_ID == 30){
+                if (MysticCoreData.LevelID == 30){
                     MysticPlayerOne.HasRocket = true;
                 }
             }
 
-            if (MysticPlayerOne.direction != 4){
+            if (MysticPlayerOne.Direction != 4){
 
                 if( GetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) == L'!' && MysticPlayerOne.HeartVisable){
                     SetTile((MysticPlayerOne.x + 40) / 20 ,(MysticPlayerOne.y - 20) / 20, L'0');
@@ -1057,7 +987,7 @@ int main (void){
 
             }
 
-            if (MysticPlayerOne.direction != 2){
+            if (MysticPlayerOne.Direction != 2){
                 if( GetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 20) / 20, CurrentData.LevelData) == L'!' && MysticPlayerOne.HeartVisable){
                     SetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 20) / 20, L'0');
                     if (MysticPlayerOne.Lives != 5){MysticPlayerOne.Lives ++;}
@@ -1084,7 +1014,7 @@ int main (void){
 
 
             if (GetTile(MysticPlayerOne.x / 20 ,(MysticPlayerOne.y - 80) / 20, CurrentData.LevelData) != L'0' && GetTile(MysticPlayerOne.x / 20 ,(MysticPlayerOne.y - 80) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock1 && GetTile(MysticPlayerOne.x / 20 ,(MysticPlayerOne.y - 80) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock2 && GetTile(MysticPlayerOne.x / 20 ,(MysticPlayerOne.y - 80) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock3 && GetTile(MysticPlayerOne.x / 20 ,(MysticPlayerOne.y - 80) / 20, CurrentData.LevelData) != CurrentData.LevelNonCollisionBlock4){
-                MysticPlayerOne.y += MysticPlayerOne.Velocity_Y;
+                MysticPlayerOne.y += MysticPlayerOne.VelocityY;
             }
             
 
@@ -1107,65 +1037,13 @@ int main (void){
         }
 
 
-        #if (defined(DEBUG_RELEASE))
-
-            if (IsKeyDown(KEY_D)){
-                if (MysticCoreData.Debug){
-                    MysticCoreData.Debug = false;
-                }
-                else {
-                    MysticCoreData.Debug = true;
-                }
-            }
-
-            if (IsKeyDown(KEY_P)){
-                MysticBoss.Alive = false;
-            }
-
-            if(MysticCoreData.Debug){
-                DrawFPS(50,50);
-
-                DrawLine(25 ,0 ,25 ,500, RED);
-                DrawLine(320 ,0 ,320 ,500, RED);
-                
-                DrawText(FormatText("Player_X: %i", MysticPlayerOne.x) , 25 , 100 , 10, PURPLE);
-                DrawText(FormatText("Player_Y: %i", MysticPlayerOne.y) , 25 , 120 , 10, PURPLE);
-                DrawText(FormatText("Player_Direction: %i", MysticPlayerOne.direction) , 25 , 140 , 10, PURPLE);
-                DrawText(FormatText("Player_JumpTrigger: %i", MysticPlayerOne.IsJumping) , 25 , 160 , 10, PURPLE);
-                DrawText(FormatText("Player_JumpCounter: %i", MysticPlayerOne.JumpCounter) , 25 , 180 , 10, PURPLE);
-
-
-                
-            }
-
-            if (IsKeyPressed(KEY_Q)){
-                SetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y) / 20, L'%');
-                SetTile((MysticPlayerOne.x + 20) / 20 ,(MysticPlayerOne.y) / 20, L'%');
-                SetTile((MysticPlayerOne.x) / 20 ,(MysticPlayerOne.y - 20) / 20, L'%');
-                SetTile((MysticPlayerOne.x + 20) / 20 ,(MysticPlayerOne.y - 20) / 20, L'%');
-                
-            }
-
-        #endif
-
-        EndShaderMode();
-
         if (IsKeyDown(KEY_F11)){ToggleFullscreen();}
-
-        if (IsKeyPressed(KEY_L)){
-            if (MysticCoreData.LowEndHardware){
-                MysticCoreData.LowEndHardware = false;
-            }
-            else {
-                MysticCoreData.LowEndHardware = true;
-            }
-        }
 
         UpdateControls();
 
 
         EndDrawing();
-        Tick_Animations();
+        TickAnimations();
 
     }
     CloseWindow();
