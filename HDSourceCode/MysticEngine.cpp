@@ -199,16 +199,17 @@ int main (void){
                 switch (TextCounter)
                 {
                     case 1:
-                        DrawText(TextSubtext("     There Has Been Something Strange Going on.", 0, FrameCounter/5), 50 , 200 , 20 , WHITE);
+                        DrawText(TextSubtext("There Has Been Something Strange Going on.", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("There Has Been Something Strange Going on.", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , WHITE);
                         break;
                     case 2:
-                        DrawText(TextSubtext("         People Have Been Acting Violent.      ", 0, FrameCounter/5), 50 , 200 , 20 , WHITE);
+                        DrawText(TextSubtext("People Have Been Acting Violent.", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("People Have Been Acting Violent.", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , WHITE);
                         break;
                     case 3:
-                        DrawText(TextSubtext("      There's a Gold Cave to the West Shining.  ", 0, FrameCounter/5), 50 , 200 , 20 , WHITE);
+                        DrawText(TextSubtext("There's a Gold Cave to the West Shining.", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("There's a Gold Cave to the West Shining.", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , WHITE);
+                        
                         break;
                     case 4:
-                        DrawText(TextSubtext("                 Better Go Investigate.            ", 0, FrameCounter/5), 50 , 200 , 20 , WHITE);
+                        DrawText(TextSubtext("Better Go Investigate.", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("Better Go Investigate.", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , WHITE);
                         break;
                     
                     default:
@@ -216,7 +217,7 @@ int main (void){
                 }
 
                 if (MysticCoreData.AnimationTicker <= 50){
-                    DrawText("                              Space" , 50 , 400 , 20 , WHITE);
+                    DrawText("Space" , 640 / 2 - MeasureText("Space" , 20) / 2 , 400 , 20 , WHITE);
                 }
                 if (MysticControls.Shoot){
                     if (TextCounter == 4){
@@ -797,17 +798,16 @@ int main (void){
 
             switch (TextCounter){
                 case 1:
-                    DrawText(TextSubtext("You've Defeated the Root of the Problem Right ?", 0, FrameCounter/5), 80 , 200 , 20 , WHITE);
+                    DrawText(TextSubtext("You've Defeated the Root of the Problem Right ?", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("You've Defeated the Root of the Problem Right ?", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , WHITE);
                     break;
                 case 2:
-                    DrawText(TextSubtext("It's All Over People Are Normal Now .", 0, FrameCounter/5), 130 , 200 , 20 , WHITE);
+                    DrawText(TextSubtext("It's All Over People Are Normal Now .", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("It's All Over People Are Normal Now .", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , WHITE);
                     break;
                 case 3:
-                    DrawText(TextSubtext("Right ?", 0, FrameCounter/5), 290 , 200 , 20 , BLUE);
+                    DrawText(TextSubtext("Right ??", 0, FrameCounter/5), 640 / 2 - MeasureText(TextSubtext("Right ??", 0, FrameCounter/5) , 20) / 2 , 200 , 20 , BLUE);
                     break;
             }
             if (TextCounter == 2 ){
-
                 if (FrameCounter >= 460){
                     TextCounter ++;
                     FrameCounter = 0;

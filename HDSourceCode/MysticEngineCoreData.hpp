@@ -172,12 +172,13 @@ static void UpdateControls(){
             MysticControls.Up = false;
         }
 
-        if (IsKeyDown(KEY_SPACE)){
+        if (IsKeyPressed(KEY_SPACE)){
             MysticControls.Shoot = true;
         }
         else {
             MysticControls.Shoot = false;
         }
+        
         MysticControls.VirtualMouseEnabled = false;
     
     }
